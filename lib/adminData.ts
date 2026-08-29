@@ -47,11 +47,11 @@ export const ADMIN_NAV = [
 ];
 
 export const ADMIN_PRODUCTS: AdminProduct[] = [
-  { name: "Portarretratos roble", price: 14500, measure: "30 × 18 cm", stock: 6, image: null },
+  { name: "Portarretratos roble", price: 14500, measure: "30 × 18 cm", stock: 6, image: PHOTOS.router },
   { name: "Cartel nombre a medida", price: 9800, measure: "40 × 12 cm", stock: 3, image: PHOTOS.panels },
-  { name: "Repisa flotante 60 cm", price: 21300, measure: "60 × 12 cm", stock: 4, image: null },
+  { name: "Repisa flotante 60 cm", price: 21300, measure: "60 × 12 cm", stock: 4, image: PHOTOS.tools },
   { name: "Set posavasos geométrico", price: 7200, measure: "10 × 10 cm", stock: 12, image: PHOTOS.wallart },
-  { name: "Organizador escritorio", price: 16900, measure: "28 × 14 cm", stock: 2, image: null },
+  { name: "Organizador escritorio", price: 16900, measure: "28 × 14 cm", stock: 2, image: PHOTOS.workshop },
   { name: "Cuadro geométrico 40 cm", price: 12400, measure: "40 × 40 cm", stock: 5, image: PHOTOS.wallart },
 ];
 

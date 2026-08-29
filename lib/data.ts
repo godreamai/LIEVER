@@ -5,9 +5,9 @@ export const WA = "https://wa.me/5493364000000?text=";
 export const PHOTOS = {
   panels: "/assets/photos/mdf-cut-panels.jpg",
   // router y wallart todavia no tienen foto real del cliente:
-  // se muestran con la textura MDF de placeholder hasta que se carguen.
-  router: null as string | null,
-  wallart: null as string | null,
+  // se repiten fotos del taller hasta que el cliente mande las propias.
+  router: "/assets/photos/workshop-cnc.jpg",
+  wallart: "/assets/photos/mdf-cut-panels.jpg",
   workshop: "/assets/photos/workshop-cnc.jpg",
   tools: "/assets/photos/tools-on-board.avif",
 };
@@ -21,7 +21,7 @@ export const PRODUCTS: Product[] = [
     price: 14500,
     measure: "30 × 18 cm",
     category: "Decoración",
-    image: null,
+    image: PHOTOS.router,
     desc: "Cortado en MDF de 18 mm con precisión CNC, terminación al natural con aceite. Ideal para foto 15 × 20.",
     specs: [
       { label: "Material", value: "MDF 18 mm" },
@@ -51,7 +51,7 @@ export const PRODUCTS: Product[] = [
     price: 21300,
     measure: "60 × 12 cm",
     category: "Muebles a medida",
-    image: null,
+    image: PHOTOS.tools,
     desc: "Repisa con soporte oculto, cortada y calibrada para que quede al ras de la pared.",
     specs: [
       { label: "Material", value: "MDF 18 mm" },
@@ -81,7 +81,7 @@ export const PRODUCTS: Product[] = [
     price: 16900,
     measure: "28 × 14 cm",
     category: "Decoración",
-    image: null,
+    image: PHOTOS.workshop,
     desc: "Tres compartimentos y una bandeja baja, encastrado sin tornillos.",
     specs: [
       { label: "Material", value: "MDF 12 mm" },
