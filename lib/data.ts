@@ -4,13 +4,15 @@ export const WA = "https://wa.me/5493364000000?text=";
 
 export const PHOTOS = {
   panels: "/assets/photos/mdf-cut-panels.jpg",
-  // router, wallart y workshop todavia no tienen foto real del cliente:
+  // router y wallart todavia no tienen foto real del cliente:
   // se muestran con la textura MDF de placeholder hasta que se carguen.
   router: null as string | null,
   wallart: null as string | null,
-  workshop: null as string | null,
+  workshop: "/assets/photos/workshop-cnc.jpg",
   tools: "/assets/photos/tools-on-board.avif",
 };
+
+export const HERO_VIDEO = "/uploads/hero-cnc.mp4";
 
 export const PRODUCTS: Product[] = [
   {

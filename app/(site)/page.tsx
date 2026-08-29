@@ -7,13 +7,19 @@ import { CategoryCard } from "@/components/ds/CategoryCard";
 import { MdfSurface } from "@/components/ds/MdfSurface";
 import { Icon } from "@/components/ds/Icon";
 import { MeasureTag, MeasureRule, StepCard } from "@/components/ui";
-import { CATEGORIES, PHOTOS, PRODUCTS } from "@/lib/data";
+import { CATEGORIES, HERO_VIDEO, PHOTOS, PRODUCTS } from "@/lib/data";
 
 function HomeHero() {
   return (
     <section style={{ position: "relative", overflow: "hidden", background: "var(--ink)" }}>
-      {/* TODO: video real del taller (uploads/vecteezy_lathe-...mp4) todavia no cargado — placeholder de fondo mientras tanto */}
-      <div style={{ position: "absolute", inset: 0, background: "var(--mdf-face-dark)" }} />
+      <video
+        src={HERO_VIDEO}
+        autoPlay
+        muted
+        loop
+        playsInline
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+      />
       <div style={{ position: "absolute", inset: 0, background: "rgba(42,36,32,.62)" }} />
       <div className="wrap center" style={{ position: "relative", paddingTop: 110, paddingBottom: 80, minHeight: "72vh", justifyContent: "center" }}>
         <MeasureTag value="± 0,2 mm de tolerancia" at={null} style={{ marginBottom: 22 }} />
