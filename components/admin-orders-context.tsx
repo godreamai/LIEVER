@@ -10,9 +10,21 @@ interface AdminOrdersContextValue {
   advance: (o: Order) => void;
   whatsapp: (o: Order) => void;
   clearMessage: () => void;
+  addOrder: (o: Omit<Order, "id" | "date">) => void;
 }
 
 const AdminOrdersContext = createContext<AdminOrdersContextValue | null>(null);
+
+function nextOrderId(orders: Order[]) {
+  const max = orders.reduce((m, o) => Math.max(m, parseInt(o.id.replace("#", ""), 10) || 0), 0);
+  return "#" + (max + 1);
+}
+
+function nowLabel() {
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)} · ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 export function AdminOrdersProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>(ORDERS);
@@ -30,8 +42,12 @@ export function AdminOrdersProvider({ children }: { children: React.ReactNode })
     setLastMessage((next ? next.msg(o) : `Hola ${o.customer.split(" ")[0]}! Te escribo por el pedido ${o.id}.`) + "  →  " + o.phone);
   };
 
+  const addOrder = (o: Omit<Order, "id" | "date">) => {
+    setOrders((prev) => [{ ...o, id: nextOrderId(prev), date: nowLabel() }, ...prev]);
+  };
+
   return (
-    <AdminOrdersContext.Provider value={{ orders, lastMessage, advance, whatsapp, clearMessage: () => setLastMessage(null) }}>
+    <AdminOrdersContext.Provider value={{ orders, lastMessage, advance, whatsapp, clearMessage: () => setLastMessage(null), addOrder }}>
       {children}
     </AdminOrdersContext.Provider>
   );
