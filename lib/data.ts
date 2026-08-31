@@ -1,6 +1,14 @@
 import type { Category, Product } from "./types";
 
-export const WA = "https://wa.me/5493364000000?text=";
+export const WA = "https://wa.me/5493364027991?text=";
+export const PHONE = "+54 9 336 402-7991";
+export const PHONE_RAW = "+5493364027991";
+export const INSTAGRAM = "https://www.instagram.com/liever.sannicolas/";
+export const INSTAGRAM_EVENTOS = "https://www.instagram.com/lievereventos";
+export const ADDRESS = "Garibaldi 203, San Nicolás de los Arroyos, Bs. As.";
+export const MAPS_URL = "https://maps.app.goo.gl/3rZgchRJQVuHyoZb8";
+export const HOURS_WEEKDAY = "Lun – Vie  9:00 a 20:00";
+export const HOURS_SAT = "Sábados  9:00 a 13:00";
 
 export const PHOTOS = {
   panels: "/assets/photos/mdf-cut-panels.jpg",
@@ -108,10 +116,10 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const CATEGORIES: Category[] = [
-  { index: "01", name: "Decoración", icon: "star", count: 14 },
-  { index: "02", name: "Cartelería", icon: "ruler", count: 9 },
-  { index: "03", name: "Muebles a medida", icon: "hammer", count: 6 },
-  { index: "04", name: "Regalos", icon: "package", count: 11 },
+  { index: "01", name: "Decoración", image: PHOTOS.wallart, count: 14 },
+  { index: "02", name: "Cartelería", image: PHOTOS.panels, count: 9 },
+  { index: "03", name: "Muebles a medida", image: PHOTOS.tools, count: 6 },
+  { index: "04", name: "Regalos", image: PHOTOS.workshop, count: 11 },
 ];
 
 export const money = (n: number) => "$" + n.toLocaleString("es-AR");

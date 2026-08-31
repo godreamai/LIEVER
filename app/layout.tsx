@@ -27,6 +27,17 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Liever — corte CNC en maderas",
   description: "Piezas de madera cortadas con exactitud milimétrica. Decoración, cartelería y muebles a medida.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -13,8 +13,8 @@ function AdminChrome({ children }: { children: React.ReactNode }) {
   return (
     <div className="admin-shell">
       <div className="admin-nav">
-        <div style={{ padding: "26px 18px 0" }}>
-          <BrandLogo height={22} tone="inverse" />
+        <div style={{ padding: "26px 18px 10px" }}>
+          <BrandLogo height={42} tone="inverse" />
         </div>
         <AdminSidebar items={nav} />
         <Link

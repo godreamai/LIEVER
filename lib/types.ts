@@ -17,7 +17,8 @@ export interface Product {
 export interface Category {
   index: string;
   name: string;
-  icon: string;
+  icon?: string;
+  image?: string | null;
   count: number;
 }
 

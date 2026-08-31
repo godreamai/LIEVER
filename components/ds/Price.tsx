@@ -13,15 +13,16 @@ export function Price({
   strike?: boolean;
   style?: React.CSSProperties;
 }) {
-  const sizes = { sm: 13, md: 15, lg: 26 };
+  const sizes = { sm: 14, md: 16, lg: 26 };
   return (
     <span
       style={{
-        fontFamily: "var(--font-mono)",
-        fontWeight: 600,
+        fontFamily: "var(--font-body)",
+        fontWeight: 700,
         fontSize: sizes[size],
         color: tone === "ink" ? "var(--text-body)" : tone === "muted" ? "var(--text-muted)" : "var(--text-price)",
         textDecoration: strike ? "line-through" : undefined,
+        letterSpacing: "-0.01em",
         ...style,
       }}
     >

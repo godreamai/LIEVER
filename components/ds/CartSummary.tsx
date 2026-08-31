@@ -7,7 +7,7 @@ import { Icon } from "./Icon";
 const row: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
-  fontFamily: "var(--font-mono)",
+  fontFamily: "var(--font-body)",
   fontSize: 14,
   padding: "6px 0",
 };

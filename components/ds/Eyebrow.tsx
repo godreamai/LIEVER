@@ -9,14 +9,15 @@ export function Eyebrow({
   children?: React.ReactNode;
   style?: React.CSSProperties;
 }) {
-  const color = tone === "wood" ? "var(--wood)" : tone === "inverse" ? "rgba(255,252,246,.6)" : "var(--text-technical)";
+  const color = tone === "wood" ? "var(--wood)" : tone === "inverse" ? "rgba(255,252,246,.7)" : "var(--text-technical)";
   return (
     <span
       style={{
         display: "block",
-        fontFamily: "var(--font-mono)",
+        fontFamily: "var(--font-body)",
         fontSize: 11,
-        letterSpacing: "var(--tracking-eyebrow)",
+        fontWeight: 600,
+        letterSpacing: "0.08em",
         textTransform: "uppercase",
         color,
         ...style,

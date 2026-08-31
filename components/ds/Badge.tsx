@@ -25,8 +25,9 @@ export function Badge({
   return (
     <span
       style={{
-        fontFamily: "var(--font-mono)",
-        fontSize: 11,
+        fontFamily: "var(--font-body)",
+        fontWeight: 600,
+        fontSize: 12,
         lineHeight: 1.4,
         padding: "4px 9px",
         borderRadius: "var(--radius)",

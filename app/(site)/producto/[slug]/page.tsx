@@ -18,7 +18,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   if (!p) notFound();
 
   const related = PRODUCTS.filter((x) => x.slug !== p.slug).slice(0, 4);
-  const [w, h] = p.measure.split("×").map((s) => s.trim());
   const shots = [
     { src: p.image, alt: p.name },
     { src: PHOTOS.panels, alt: "Detalle del corte" },
@@ -28,7 +27,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div data-screen-label="Detalle de producto">
-      <div className="wrap wrap--tight" style={{ paddingBottom: 0, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-muted)", display: "flex", gap: 8, alignItems: "center", justifyContent: "center" }}>
+      <div className="wrap wrap--tight" style={{ paddingBottom: 0, fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, letterSpacing: ".04em", textTransform: "uppercase", color: "var(--text-muted)", display: "flex", gap: 8, alignItems: "center", justifyContent: "center" }}>
         <Link href="/catalogo" style={{ color: "inherit" }}>
           Productos
         </Link>
@@ -37,12 +36,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </div>
       <section className="wrap" style={{ paddingTop: 26 }}>
         <div className="grid g2">
-          <ProductGallery shots={shots} widthLabel={w} heightLabel={h} firstSpec={p.specs[0]?.value} />
+          <ProductGallery shots={shots} />
           <div className="center">
             <Eyebrow style={{ marginBottom: 14 }}>{p.category}</Eyebrow>
             <h1 style={{ fontSize: "clamp(26px,4vw,34px)", margin: "0 0 14px" }}>{p.name}</h1>
             <AddToCart product={p} />
-            <div style={{ marginTop: 22, display: "flex", gap: 8, alignItems: "center", justifyContent: "center", fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-technical)" }}>
+            <div style={{ marginTop: 22, display: "flex", gap: 8, alignItems: "center", justifyContent: "center", fontFamily: "var(--font-body)", fontSize: 13, color: "var(--text-technical)" }}>
               <Icon name="truck" size={15} color="var(--line)" />
               Envío a todo el país · costo estimado con tu CP
             </div>

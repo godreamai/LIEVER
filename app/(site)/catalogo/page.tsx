@@ -9,7 +9,6 @@ import { ProductCard } from "@/components/ds/ProductCard";
 import { Icon } from "@/components/ds/Icon";
 import { Input } from "@/components/ds/Input";
 import { Card } from "@/components/ds/Card";
-import { MeasureRule } from "@/components/ui";
 import { CATEGORIES, money, PRODUCTS } from "@/lib/data";
 
 const SORTS = [
@@ -21,7 +20,7 @@ const SORTS = [
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ marginBottom: 26 }}>
-      <span style={{ display: "block", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--text-technical)", marginBottom: 12 }}>{title}</span>
+      <span style={{ display: "block", fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-technical)", marginBottom: 12 }}>{title}</span>
       {children}
     </div>
   );
@@ -95,7 +94,7 @@ function CatalogInner() {
       </FilterGroup>
       <FilterGroup title="Precio hasta">
         <input type="range" min="5000" max="30000" step="1000" value={max} onChange={(e) => setMax(+e.target.value)} style={{ width: "100%", accentColor: "var(--accent)" }} />
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--ink)" }}>{money(max)}</span>
+        <span style={{ fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{money(max)}</span>
       </FilterGroup>
       <FilterGroup title="Ordenar por">
         {SORTS.map((s) => (
@@ -106,7 +105,7 @@ function CatalogInner() {
       </FilterGroup>
       <button
         onClick={clear}
-        style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", background: "transparent", border: "none", color: "var(--text-muted)", textDecoration: "underline", cursor: "pointer", padding: 0, marginBottom: 26 }}
+        style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, background: "transparent", border: "none", color: "var(--text-muted)", textDecoration: "underline", cursor: "pointer", padding: 0, marginBottom: 26 }}
       >
         Limpiar filtros
       </button>
@@ -137,7 +136,7 @@ function CatalogInner() {
             <button
               className="catalog-toggle"
               onClick={() => setOpenFilters((v) => !v)}
-              style={{ display: "none", width: "100%", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: ".08em", textTransform: "uppercase", padding: "11px 14px", borderRadius: "var(--radius-pill)", border: "1px solid var(--border-strong)", background: "transparent", color: "var(--ink)", cursor: "pointer", marginBottom: 16 }}
+              style={{ display: "none", width: "100%", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 600, letterSpacing: ".04em", textTransform: "uppercase", padding: "11px 14px", borderRadius: "var(--radius-pill)", border: "1px solid var(--border-strong)", background: "transparent", color: "var(--ink)", cursor: "pointer", marginBottom: 16 }}
             >
               <Icon name="settings" size={14} /> {openFilters ? "Ocultar filtros" : "Filtros"}
             </button>
@@ -145,10 +144,10 @@ function CatalogInner() {
           </aside>
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 18 }}>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)" }}>
+              <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "var(--text-muted)" }}>
                 {rows.length} de {PRODUCTS.length} productos{cat !== "Todos" ? " · " + cat : ""}
               </span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-technical)" }}>{SORTS.find((s) => s.id === sort)?.label}</span>
+              <span style={{ fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 500, color: "var(--text-technical)" }}>{SORTS.find((s) => s.id === sort)?.label}</span>
             </div>
             {rows.length === 0 ? (
               <Card style={{ padding: 40, textAlign: "center" }}>
@@ -171,7 +170,6 @@ function CatalogInner() {
           </div>
         </div>
       </div>
-      <MeasureRule value="Placas de hasta 2,44 × 1,22 m" style={{ marginBottom: 60 }} />
     </div>
   );
 }

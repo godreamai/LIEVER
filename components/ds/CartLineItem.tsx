@@ -41,12 +41,12 @@ export function CartLineItem({
       <MdfSurface height={70} src={image} alt={name} style={{ width: 70, flex: "0 0 70px" }} />
       <div style={{ minWidth: 0 }}>
         <div style={{ fontWeight: 600, fontSize: 14 }}>{name}</div>
-        {measure && <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)" }}>{measure}</div>}
+        {measure && <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "var(--text-muted)" }}>{measure}</div>}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
           <button aria-label="Quitar uno" style={stepBtn} onClick={onDec}>
             <Icon name="minus" size={13} />
           </button>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, minWidth: 16, textAlign: "center" }}>{qty}</span>
+          <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, minWidth: 16, textAlign: "center" }}>{qty}</span>
           <button aria-label="Agregar uno" style={stepBtn} onClick={onInc}>
             <Icon name="plus" size={13} />
           </button>

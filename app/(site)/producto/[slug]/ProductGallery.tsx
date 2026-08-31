@@ -2,13 +2,9 @@
 
 import { useState } from "react";
 import { MdfSurface } from "@/components/ds/MdfSurface";
-import { MeasureTag } from "@/components/ui";
 
 export function ProductGallery({
   shots,
-  widthLabel,
-  heightLabel,
-  firstSpec,
 }: {
   shots: { src: string | null; alt: string }[];
   widthLabel?: string;
@@ -18,11 +14,7 @@ export function ProductGallery({
   const [shot, setShot] = useState(0);
   return (
     <div>
-      <MdfSurface height={400} src={shots[shot].src} alt={shots[shot].alt}>
-        {widthLabel && <MeasureTag value={widthLabel} at="tl" />}
-        {heightLabel && <MeasureTag value={heightLabel} at="tr" />}
-        {firstSpec && <MeasureTag value={firstSpec} at="bl" />}
-      </MdfSurface>
+      <MdfSurface height={400} src={shots[shot].src} alt={shots[shot].alt} />
       <div className="grid gtight" style={{ gridTemplateColumns: "repeat(4,1fr)", marginTop: 12 }}>
         {shots.map((s, i) => (
           <MdfSurface
