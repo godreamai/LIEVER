@@ -4,17 +4,18 @@ export interface NavLink {
   label: string;
   footerOnly?: boolean;
   extraMatch?: string[];
+  /** Agrupación usada solo en el footer, para no listar los 7 links en una sola columna. */
+  group?: "explora" | "marca";
 }
 
 export const NAV_LINKS: NavLink[] = [
-  { id: "inicio", href: "/", label: "Inicio", footerOnly: true },
-  { id: "productos", href: "/catalogo", label: "Productos", extraMatch: ["/producto"] },
-  { id: "paneles", href: "/paneles-ranurados", label: "Paneles Ranurados" },
-  { id: "mobiliario", href: "/mobiliario", label: "Mobiliario", footerOnly: true },
-  { id: "soluciones", href: "/soluciones", label: "Soluciones" },
-  { id: "proyectos", href: "/proyectos", label: "Proyectos" },
-  { id: "nosotros", href: "/nosotros", label: "Nosotros" },
-  { id: "contacto", href: "/contacto", label: "Contacto" },
+  { id: "productos", href: "/catalogo", label: "Productos", extraMatch: ["/producto"], group: "explora" },
+  { id: "paneles", href: "/paneles-ranurados", label: "Paneles Ranurados", group: "explora" },
+  { id: "mobiliario", href: "/mobiliario", label: "Mobiliario", footerOnly: true, group: "explora" },
+  { id: "soluciones", href: "/soluciones", label: "Soluciones", group: "explora" },
+  { id: "proyectos", href: "/proyectos", label: "Proyectos", group: "marca" },
+  { id: "nosotros", href: "/nosotros", label: "Nosotros", group: "marca" },
+  { id: "contacto", href: "/contacto", label: "Contacto", group: "marca" },
 ];
 
 export const HEADER_NAV_LINKS = NAV_LINKS.filter((l) => !l.footerOnly);

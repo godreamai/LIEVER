@@ -100,19 +100,14 @@ function HomeHero() {
 
 function NeedCard({ title, desc, href, image }: { title: string; desc: string; href: string; image: string }) {
   return (
-    <Link href={href} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
-      <Card interactive padding={0} style={{ overflow: "hidden", height: "100%", display: "flex", flexDirection: "column" }}>
-        <div style={{ position: "relative", height: 140, background: "var(--bg-alt)" }}>
-          <Image src={image} alt={title} fill sizes="(max-width: 768px) 100vw, 25vw" style={{ objectFit: "cover" }} />
-        </div>
-        <div style={{ padding: "18px 20px", display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
-          <h3 style={{ fontSize: 16, margin: 0, fontWeight: 700 }}>{title}</h3>
-          <p style={{ color: "var(--text-muted)", fontSize: 13, margin: 0, lineHeight: 1.55, flex: 1 }}>{desc}</p>
-          <span style={{ fontSize: 12, fontWeight: 600, color: "var(--accent)", display: "inline-flex", alignItems: "center", gap: 4 }}>
-            Ver más <Icon name="arrow-right" size={13} />
-          </span>
-        </div>
-      </Card>
+    <Link href={href} className="need-card">
+      <div className="need-card-circle">
+        <Image src={image} alt={title} fill sizes="120px" className="need-card-img" />
+      </div>
+      <h3 className="need-card-title" style={{ fontSize: 16, margin: 0, fontFamily: "var(--font-display)", fontWeight: 700, color: "var(--ink)" }}>
+        {title}
+      </h3>
+      <p style={{ color: "var(--text-muted)", fontSize: 13, margin: 0, lineHeight: 1.5, maxWidth: 200 }}>{desc}</p>
     </Link>
   );
 }
@@ -130,7 +125,7 @@ export default function Home() {
       <section style={{ background: "var(--surface-alt)", padding: "70px 20px", borderBottom: "1px solid var(--border-hairline)" }}>
         <div className="wrap center" style={{ padding: 0 }}>
           <SectionTitle eyebrow="Empezá por acá" title="¿Qué necesitás resolver?" size="lg" style={{ textAlign: "center", marginBottom: 32 }} />
-          <div className="grid g4">
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", flexWrap: "wrap", gap: "28px 36px", width: "100%" }}>
             {NECESIDADES.map((n) => (
               <NeedCard key={n.title} {...n} />
             ))}
