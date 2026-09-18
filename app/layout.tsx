@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${zillaSlab.variable} ${inter.variable} ${plexMono.variable}`}>
-      <body>
+      <body suppressHydrationWarning>
         <CartProvider>{children}</CartProvider>
       </body>
     </html>
