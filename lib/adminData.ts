@@ -44,6 +44,7 @@ export const ADMIN_NAV = [
   { id: "pedidos", label: "Pedidos", icon: "clipboard-list", href: "/admin/pedidos" },
   { id: "productos", label: "Productos", icon: "box", href: "/admin/productos" },
   { id: "envios", label: "Tarifas de envío", icon: "truck", href: "/admin/envios" },
+  { id: "perfil", label: "Mi perfil", icon: "user", href: "/admin/perfil" },
 ];
 
 export const SHIP_ZONES = [
