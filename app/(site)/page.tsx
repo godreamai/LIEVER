@@ -6,7 +6,8 @@ import { ProductCard } from "@/components/ds/ProductCard";
 import { Card } from "@/components/ds/Card";
 import { Icon } from "@/components/ds/Icon";
 import Image from "next/image";
-import { HERO_VIDEO, PHOTOS, PRODUCTS } from "@/lib/data";
+import { HERO_VIDEO, PHOTOS } from "@/lib/data";
+import { getPublicProducts } from "@/lib/products";
 
 const NECESIDADES = [
   {
@@ -112,9 +113,10 @@ function NeedCard({ title, desc, href, image }: { title: string; desc: string; h
   );
 }
 
-export default function Home() {
-  const paneles = PRODUCTS.filter((p) => p.category === "Paneles ranurados").slice(0, 2);
-  const otros = PRODUCTS.filter((p) => p.category !== "Paneles ranurados").slice(0, 2);
+export default async function Home() {
+  const products = await getPublicProducts().catch(() => []);
+  const paneles = products.filter((p) => p.category === "Paneles ranurados").slice(0, 2);
+  const otros = products.filter((p) => p.category !== "Paneles ranurados").slice(0, 2);
   const destacados = [...paneles, ...otros];
 
   return (
@@ -140,13 +142,15 @@ export default function Home() {
           Diseños listos para pedir o personalizar a tu gusto
         </p>
 
-        <div className="grid g4">
-          {destacados.map((p) => (
-            <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
-              <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} />
-            </Link>
-          ))}
-        </div>
+        {destacados.length > 0 && (
+          <div className="grid g4">
+            {destacados.map((p) => (
+              <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
+                <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} />
+              </Link>
+            ))}
+          </div>
+        )}
 
         <Button as="a" href="/catalogo" variant="secondary" size="sm" style={{ marginTop: 36 }}>
           Ver todos los productos →

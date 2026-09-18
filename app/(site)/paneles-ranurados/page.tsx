@@ -1,13 +1,23 @@
 import Link from "next/link";
 import { Button } from "@/components/ds/Button";
+import { Card } from "@/components/ds/Card";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { SectionTitle } from "@/components/ds/SectionTitle";
 import { ProductCard } from "@/components/ds/ProductCard";
 import { Icon } from "@/components/ds/Icon";
-import { PANELES, WA } from "@/lib/data";
+import { WA } from "@/lib/data";
+import { getPublicProductsByCategory } from "@/lib/products";
 
-export default function PanelesRanuradosPage() {
+export default async function PanelesRanuradosPage() {
   const waPersonalizar = WA + encodeURIComponent("Hola Liever! Quiero personalizar un panel ranurado (medida, color o logo).");
+
+  let paneles: Awaited<ReturnType<typeof getPublicProductsByCategory>> = [];
+  let loadError = false;
+  try {
+    paneles = await getPublicProductsByCategory("Paneles ranurados");
+  } catch {
+    loadError = true;
+  }
 
   return (
     <div data-screen-label="Paneles ranurados">
@@ -30,13 +40,27 @@ export default function PanelesRanuradosPage() {
 
       <section className="wrap center" style={{ padding: "70px 20px" }}>
         <SectionTitle eyebrow="Modelos disponibles" title="Elegí tu panel ranurado" size="lg" style={{ textAlign: "center" }} />
-        <div className="grid g4">
-          {PANELES.map((p) => (
-            <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
-              <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} />
-            </Link>
-          ))}
-        </div>
+        {loadError ? (
+          <Card style={{ padding: 40, textAlign: "center" }}>
+            <p className="lead" style={{ color: "var(--text-muted)", margin: 0 }}>
+              No pudimos cargar los paneles ranurados. Probá de nuevo en unos minutos.
+            </p>
+          </Card>
+        ) : paneles.length === 0 ? (
+          <Card style={{ padding: 40, textAlign: "center" }}>
+            <p className="lead" style={{ color: "var(--text-muted)", margin: 0 }}>
+              Todavía no hay paneles publicados.
+            </p>
+          </Card>
+        ) : (
+          <div className="grid g4">
+            {paneles.map((p) => (
+              <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
+                <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} />
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       <section style={{ background: "var(--surface-alt)", padding: "60px 20px", borderTop: "1px solid var(--border-hairline)" }}>

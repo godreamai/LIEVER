@@ -1,13 +1,23 @@
 import Link from "next/link";
 import { Button } from "@/components/ds/Button";
+import { Card } from "@/components/ds/Card";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { SectionTitle } from "@/components/ds/SectionTitle";
 import { ProductCard } from "@/components/ds/ProductCard";
 import { Icon } from "@/components/ds/Icon";
-import { MOBILIARIO, WA } from "@/lib/data";
+import { WA } from "@/lib/data";
+import { getPublicProductsByCategory } from "@/lib/products";
 
-export default function MobiliarioPage() {
+export default async function MobiliarioPage() {
   const waCotizar = WA + encodeURIComponent("Hola Liever! Quiero cotizar mobiliario para mi comercio.");
+
+  let mobiliario: Awaited<ReturnType<typeof getPublicProductsByCategory>> = [];
+  let loadError = false;
+  try {
+    mobiliario = await getPublicProductsByCategory("Mobiliario comercial");
+  } catch {
+    loadError = true;
+  }
 
   return (
     <div data-screen-label="Mobiliario comercial">
@@ -27,13 +37,27 @@ export default function MobiliarioPage() {
 
       <section className="wrap center" style={{ padding: "70px 20px" }}>
         <SectionTitle eyebrow="Catálogo en crecimiento" title="Modelos disponibles" size="lg" style={{ textAlign: "center" }} />
-        <div className="grid g4">
-          {MOBILIARIO.map((p) => (
-            <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
-              <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} />
-            </Link>
-          ))}
-        </div>
+        {loadError ? (
+          <Card style={{ padding: 40, textAlign: "center" }}>
+            <p className="lead" style={{ color: "var(--text-muted)", margin: 0 }}>
+              No pudimos cargar el mobiliario. Probá de nuevo en unos minutos.
+            </p>
+          </Card>
+        ) : mobiliario.length === 0 ? (
+          <Card style={{ padding: 40, textAlign: "center" }}>
+            <p className="lead" style={{ color: "var(--text-muted)", margin: 0 }}>
+              Todavía no hay mobiliario publicado.
+            </p>
+          </Card>
+        ) : (
+          <div className="grid g4">
+            {mobiliario.map((p) => (
+              <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
+                <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} />
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       <section style={{ background: "var(--surface-alt)", padding: "60px 20px", borderTop: "1px solid var(--border-hairline)" }}>

@@ -4,20 +4,41 @@ import { Icon } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { SectionTitle } from "@/components/ds/SectionTitle";
 import { ProductCard } from "@/components/ds/ProductCard";
-import { PRODUCTS, PHOTOS } from "@/lib/data";
+import { Card } from "@/components/ds/Card";
+import { PHOTOS } from "@/lib/data";
+import { getPublicProductBySlug, getPublicProducts } from "@/lib/products";
 import { ProductGallery } from "./ProductGallery";
 import { AddToCart } from "./AddToCart";
 
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
-}
+// Sin generateStaticParams: el catálogo se edita en cualquier momento desde
+// el admin, así que cada visita renderiza con los datos vigentes en Supabase
+// (~15-20 productos, el costo de no pre-generar es insignificante).
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const p = PRODUCTS.find((x) => x.slug === slug);
+
+  let p;
+  let loadError = false;
+  try {
+    p = await getPublicProductBySlug(slug);
+  } catch {
+    loadError = true;
+  }
+
+  if (loadError) {
+    return (
+      <div className="wrap center" style={{ paddingTop: 60 }}>
+        <Card style={{ padding: 40, textAlign: "center", maxWidth: 480 }}>
+          <p className="lead" style={{ color: "var(--text-muted)", margin: 0 }}>
+            No pudimos cargar este producto. Probá de nuevo en unos minutos.
+          </p>
+        </Card>
+      </div>
+    );
+  }
   if (!p) notFound();
 
-  const related = PRODUCTS.filter((x) => x.slug !== p.slug).slice(0, 4);
+  const related = (await getPublicProducts().catch(() => [])).filter((x) => x.slug !== p.slug).slice(0, 4);
   const shots = [
     { src: p.image, alt: p.name },
     { src: PHOTOS.panels, alt: "Detalle del corte" },
