@@ -40,13 +40,13 @@ export const SOLUTIONS: Solution[] = [
     title: "Soy arquitecto / profesional",
     description: "Incorporá soluciones LIEVER a tus proyectos: divisores, mobiliario, paneles y piezas especiales a partir de las necesidades de cada espacio.",
     icon: "pencil",
-    cta: { label: "Trabajemos juntos", href: "/contacto?motivo=profesional" },
+    cta: { label: "Trabajemos juntos", href: "/contacto?motivo=profesionales" },
   },
   {
     slug: "no-encuentro",
     title: "Necesito algo que no encuentro",
     description: "Contanos qué necesitás y desarrollamos una solución a medida para tu proyecto.",
     icon: "message-circle",
-    cta: { label: "Cotizar proyecto", href: "/contacto?motivo=otro" },
+    cta: { label: "Cotizar proyecto", href: "/contacto?motivo=no-encuentro" },
   },
 ];

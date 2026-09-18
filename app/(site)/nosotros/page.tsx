@@ -86,7 +86,7 @@ export default function NosotrosPage() {
           <p style={{ color: "rgba(255,252,246,.75)", fontSize: 15, margin: "0 0 26px", maxWidth: 560 }}>
             Incorporá soluciones LIEVER a tus proyectos: mobiliario, divisores, paneles y piezas especiales a partir de las necesidades de cada espacio.
           </p>
-          <Button as="a" href="/contacto?motivo=profesional" variant="onDark">
+          <Button as="a" href="/contacto?motivo=profesionales" variant="onDark">
             Trabajemos juntos
           </Button>
         </div>

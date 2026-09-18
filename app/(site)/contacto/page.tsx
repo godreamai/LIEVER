@@ -6,6 +6,7 @@ import { SectionTitle } from "@/components/ds/SectionTitle";
 import { Icon } from "@/components/ds/Icon";
 import { Accordion, type AccordionItem } from "@/components/ds/Accordion";
 import { WA, PHONE, PHONE_RAW, INSTAGRAM, INSTAGRAM_EVENTOS, ADDRESS, MAPS_URL, HOURS_WEEKDAY, HOURS_SAT } from "@/lib/data";
+import { ContactForm } from "./ContactForm";
 
 const FAQ_ITEMS: AccordionItem[] = [
   {
@@ -141,6 +142,12 @@ export default function ContactoPage() {
             Escribinos por WhatsApp
           </Button>
         </div>
+      </section>
+
+      {/* Formulario de cotización */}
+      <section className="wrap center" style={{ padding: "70px 20px 60px" }}>
+        <SectionTitle eyebrow="Pedí una solución" title="Contanos tu proyecto" size="lg" style={{ textAlign: "center" }} />
+        <ContactForm />
       </section>
 
       {/* Info Cards Grid (4 Channels) en fondo suave alternado */}
