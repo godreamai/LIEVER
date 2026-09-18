@@ -22,7 +22,181 @@ export const PHOTOS = {
 
 export const HERO_VIDEO = "/uploads/hero-cnc.mp4";
 
-export const PRODUCTS: Product[] = [
+export const PANELES: Product[] = [
+  {
+    slug: "panel-ranurado-roble-120",
+    name: "Panel ranurado Roble 120",
+    price: 32000,
+    measure: "120 × 60 cm",
+    category: "Paneles ranurados",
+    image: PHOTOS.panels,
+    desc: "Panel ranurado horizontal para exhibir mercadería, organizar herramientas o vestir una pared comercial. Ranurado cada 3 cm, compatible con accesorios estándar.",
+    medidas: ["60 × 60 cm", "120 × 60 cm", "120 × 90 cm"],
+    colores: ["Roble natural", "Nogal", "Blanco"],
+    personalizable: true,
+    accesorios: ["Ganchos simples y dobles", "Repisas flotantes", "Portamacetas"],
+    tiempoFabricacion: "5 a 7 días hábiles",
+    entrega: { envio: true, retiro: true, nota: "Envío a todo el país · retiro sin cargo en el taller" },
+    specs: [
+      { label: "Material", value: "MDF 18 mm" },
+      { label: "Terminación", value: "Melamina o enchapado" },
+      { label: "Ranurado", value: "Cada 3 cm, paso europeo" },
+      { label: "Producción", value: "5 a 7 días hábiles" },
+    ],
+  },
+  {
+    slug: "panel-ranurado-blanco-90",
+    name: "Panel ranurado Blanco 90",
+    price: 24500,
+    measure: "90 × 60 cm",
+    category: "Paneles ranurados",
+    image: PHOTOS.router,
+    desc: "Versión compacta pensada para vidrieras, probadores y espacios chicos que necesitan exhibir sin perder orden.",
+    medidas: ["60 × 45 cm", "90 × 60 cm"],
+    colores: ["Blanco", "Gris claro"],
+    personalizable: true,
+    accesorios: ["Ganchos simples", "Bandejas exhibidoras"],
+    tiempoFabricacion: "4 a 6 días hábiles",
+    entrega: { envio: true, retiro: true, nota: "Envío a todo el país · retiro sin cargo en el taller" },
+    specs: [
+      { label: "Material", value: "MDF 15 mm" },
+      { label: "Terminación", value: "Melamina blanca" },
+      { label: "Ranurado", value: "Cada 3 cm, paso europeo" },
+      { label: "Producción", value: "4 a 6 días hábiles" },
+    ],
+  },
+  {
+    slug: "panel-ranurado-identidad",
+    name: "Panel ranurado con logo",
+    price: 38900,
+    measure: "120 × 80 cm",
+    category: "Paneles ranurados",
+    image: PHOTOS.workshop,
+    desc: "El mismo sistema de ranurado, con tu logo o identidad grabada en el panel. Pensado para vidrieras y mostradores que quieren mostrar marca.",
+    medidas: ["90 × 60 cm", "120 × 80 cm", "medida especial"],
+    colores: ["Roble natural", "Nogal", "Negro", "Blanco"],
+    personalizable: true,
+    accesorios: ["Ganchos simples y dobles", "Repisas flotantes", "Portamacetas", "Bandejas exhibidoras"],
+    tiempoFabricacion: "7 a 10 días hábiles",
+    entrega: { envio: true, retiro: true, nota: "Envío a todo el país · retiro sin cargo en el taller" },
+    specs: [
+      { label: "Material", value: "MDF 18 mm" },
+      { label: "Terminación", value: "Melamina o enchapado + grabado CNC" },
+      { label: "Ranurado", value: "Cada 3 cm, paso europeo" },
+      { label: "Producción", value: "7 a 10 días hábiles" },
+    ],
+  },
+  {
+    slug: "panel-ranurado-modular-negro",
+    name: "Panel ranurado modular Negro",
+    price: 29800,
+    measure: "80 × 80 cm",
+    category: "Paneles ranurados",
+    image: PHOTOS.tools,
+    desc: "Formato cuadrado pensado para combinar varios módulos y armar una pared de exhibición a medida del local.",
+    medidas: ["80 × 80 cm"],
+    colores: ["Negro", "Roble natural"],
+    personalizable: true,
+    accesorios: ["Ganchos simples y dobles", "Repisas flotantes"],
+    tiempoFabricacion: "5 a 7 días hábiles",
+    entrega: { envio: true, retiro: true, nota: "Envío a todo el país · retiro sin cargo en el taller" },
+    specs: [
+      { label: "Material", value: "MDF 18 mm" },
+      { label: "Terminación", value: "Melamina negra" },
+      { label: "Ranurado", value: "Cada 3 cm, paso europeo" },
+      { label: "Producción", value: "5 a 7 días hábiles" },
+    ],
+  },
+];
+
+export const MOBILIARIO: Product[] = [
+  {
+    slug: "mostrador-modular-comercio",
+    name: "Mostrador modular",
+    price: 145000,
+    measure: "120 × 90 × 45 cm",
+    category: "Mobiliario comercial",
+    image: PHOTOS.workshop,
+    desc: "Mostrador de atención al público con espacio de guardado interno. Estructura modular pensada para adaptarse al layout de tu local.",
+    medidas: ["100 × 90 × 45 cm", "120 × 90 × 45 cm", "medida especial"],
+    colores: ["Roble natural", "Nogal", "Blanco", "Negro"],
+    personalizable: true,
+    accesorios: ["Cajonera interna", "Pasacables", "Iluminación LED"],
+    tiempoFabricacion: "10 a 15 días hábiles",
+    entrega: { envio: true, retiro: true, nota: "Envío a todo el país (a coordinar por volumen) · retiro en taller" },
+    specs: [
+      { label: "Material", value: "MDF 18 mm + estructura reforzada" },
+      { label: "Terminación", value: "Melamina o enchapado" },
+      { label: "Carga superior", value: "Hasta 25 kg" },
+      { label: "Producción", value: "10 a 15 días hábiles" },
+    ],
+  },
+  {
+    slug: "estanteria-modular-pared",
+    name: "Estantería modular de pared",
+    price: 68000,
+    measure: "100 × 180 cm",
+    category: "Mobiliario comercial",
+    image: PHOTOS.panels,
+    desc: "Sistema de estantes para aprovechar altura de pared, exhibir mercadería y organizar stock a la vista del cliente.",
+    medidas: ["100 × 120 cm", "100 × 180 cm", "medida especial"],
+    colores: ["Roble natural", "Nogal", "Blanco"],
+    personalizable: true,
+    accesorios: ["Estantes intermedios", "Iluminación LED", "Ganchos exhibidores"],
+    tiempoFabricacion: "8 a 12 días hábiles",
+    entrega: { envio: true, retiro: true, nota: "Envío a todo el país · retiro en taller" },
+    specs: [
+      { label: "Material", value: "MDF 18 mm" },
+      { label: "Terminación", value: "Melamina o enchapado" },
+      { label: "Carga por estante", value: "Hasta 15 kg" },
+      { label: "Producción", value: "8 a 12 días hábiles" },
+    ],
+  },
+  {
+    slug: "exhibidor-piso-comercial",
+    name: "Exhibidor de piso",
+    price: 52000,
+    measure: "50 × 50 × 140 cm",
+    category: "Mobiliario comercial",
+    image: PHOTOS.tools,
+    desc: "Exhibidor independiente para ubicar en isla o vidriera. Ideal para destacar una línea de producto o una promoción puntual.",
+    medidas: ["40 × 40 × 120 cm", "50 × 50 × 140 cm"],
+    colores: ["Roble natural", "Blanco", "Negro"],
+    personalizable: true,
+    accesorios: ["Cartelería superior", "Base con ruedas"],
+    tiempoFabricacion: "7 a 10 días hábiles",
+    entrega: { envio: true, retiro: true, nota: "Envío a todo el país · retiro en taller" },
+    specs: [
+      { label: "Material", value: "MDF 18 mm" },
+      { label: "Terminación", value: "Melamina o enchapado" },
+      { label: "Carga superior", value: "Hasta 10 kg" },
+      { label: "Producción", value: "7 a 10 días hábiles" },
+    ],
+  },
+  {
+    slug: "divisor-ambientes-modular",
+    name: "Divisor de ambientes modular",
+    price: 89000,
+    measure: "160 × 180 cm",
+    category: "Mobiliario comercial",
+    image: PHOTOS.wallart,
+    desc: "Panel calado autoportante para separar sectores de un local o una oficina sin recurrir a obra. Se arma y desarma sin herramientas especiales.",
+    medidas: ["120 × 180 cm", "160 × 180 cm", "medida especial"],
+    colores: ["Roble natural", "Nogal", "Blanco"],
+    personalizable: true,
+    accesorios: ["Base autoportante", "Ruedas para traslado"],
+    tiempoFabricacion: "8 a 12 días hábiles",
+    entrega: { envio: true, retiro: true, nota: "Envío a todo el país (a coordinar por volumen) · retiro en taller" },
+    specs: [
+      { label: "Material", value: "MDF calado 18 mm" },
+      { label: "Terminación", value: "Melamina o enchapado" },
+      { label: "Armado", value: "Sin herramientas, por encastre" },
+      { label: "Producción", value: "8 a 12 días hábiles" },
+    ],
+  },
+];
+
+const OTHER_PRODUCTS: Product[] = [
   {
     slug: "portarretratos-roble",
     name: "Portarretratos roble",
@@ -115,11 +289,19 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
+export const PRODUCTS: Product[] = [...PANELES, ...MOBILIARIO, ...OTHER_PRODUCTS];
+
+function countByCategory(category: string) {
+  return PRODUCTS.filter((p) => p.category === category).length;
+}
+
 export const CATEGORIES: Category[] = [
-  { index: "01", name: "Decoración", image: PHOTOS.wallart, count: 14 },
-  { index: "02", name: "Cartelería", image: PHOTOS.panels, count: 9 },
-  { index: "03", name: "Muebles a medida", image: PHOTOS.tools, count: 6 },
-  { index: "04", name: "Regalos", image: PHOTOS.workshop, count: 11 },
+  { index: "01", name: "Paneles ranurados", image: PHOTOS.panels, count: countByCategory("Paneles ranurados") },
+  { index: "02", name: "Mobiliario comercial", image: PHOTOS.workshop, count: countByCategory("Mobiliario comercial") },
+  { index: "03", name: "Decoración", image: PHOTOS.wallart, count: countByCategory("Decoración") },
+  { index: "04", name: "Cartelería", image: PHOTOS.panels, count: countByCategory("Cartelería") },
+  { index: "05", name: "Muebles a medida", image: PHOTOS.tools, count: countByCategory("Muebles a medida") },
+  { index: "06", name: "Regalos", image: PHOTOS.workshop, count: countByCategory("Regalos") },
 ];
 
 export const money = (n: number) => "$" + n.toLocaleString("es-AR");
