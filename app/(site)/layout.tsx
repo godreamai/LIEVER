@@ -4,12 +4,7 @@ import { BrandLogo } from "@/components/ui";
 import { WhatsAppFab } from "@/components/ds/WhatsAppFab";
 import { Icon } from "@/components/ds/Icon";
 import { WA, PHONE, PHONE_RAW, INSTAGRAM, INSTAGRAM_EVENTOS, ADDRESS, MAPS_URL, HOURS_WEEKDAY, HOURS_SAT } from "@/lib/data";
-
-const NAV_LINKS = [
-  { label: "Catálogo", href: "/catalogo" },
-  { label: "Personalizado", href: "/personalizado" },
-  { label: "Contacto", href: "/contacto" },
-];
+import { NAV_LINKS } from "@/lib/nav";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -35,7 +30,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
               margin: 0,
               maxWidth: 320,
             }}>
-              Corte CNC en madera con precisión milimétrica. Decoración, cartelería y muebles a medida.
+              Diseño y fabricación de mobiliario y soluciones pensadas para tu espacio.
             </p>
           </div>
 
@@ -52,7 +47,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
             }}>Navegación</span>
             {NAV_LINKS.map((l) => (
               <Link
-                key={l.href + l.label}
+                key={l.id}
                 href={l.href}
                 className="footer-nav-link"
               >

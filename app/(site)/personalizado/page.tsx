@@ -106,7 +106,7 @@ export default function CustomLanding() {
                         style={{ objectFit: "cover" }}
                       />
                     ) : (
-                      <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(217,83,30,.06)", color: "var(--accent)", fontWeight: 600 }}>
+                      <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(181,103,61,.06)", color: "var(--accent)", fontWeight: 600 }}>
                         + Tu proyecto aquí
                       </div>
                     )}
@@ -175,7 +175,7 @@ export default function CustomLanding() {
                     width: 48,
                     height: 48,
                     borderRadius: 14,
-                    background: "rgba(217,83,30,.08)",
+                    background: "rgba(181,103,61,.08)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",

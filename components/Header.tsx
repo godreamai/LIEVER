@@ -8,12 +8,7 @@ import { BrandLogo } from "./ui";
 import { useCart } from "./cart-context";
 import { TopAnnouncementBar } from "./ds/TopAnnouncementBar";
 import { CartDrawer } from "./ds/CartDrawer";
-
-const LINKS = [
-  { id: "productos", href: "/catalogo", label: "Productos" },
-  { id: "personalizado", href: "/personalizado", label: "Personalizado" },
-  { id: "contacto", href: "/contacto", label: "Contacto" },
-];
+import { HEADER_NAV_LINKS, isNavActive } from "@/lib/nav";
 
 function subscribeToResize(callback: () => void) {
   window.addEventListener("resize", callback);
@@ -38,20 +33,13 @@ export function AppHeader() {
     };
   }, []);
 
-  const active = pathname?.startsWith("/contacto")
-    ? "contacto"
-    : pathname?.startsWith("/personalizado")
-    ? "personalizado"
-    : pathname?.startsWith("/catalogo") || pathname?.startsWith("/producto")
-    ? "productos"
-    : null;
-
-  const linkStyle = (id: string): React.CSSProperties => ({
+  const linkStyle = (isActive: boolean): React.CSSProperties => ({
     fontSize: 14,
     fontWeight: 500,
-    color: active === id ? "var(--accent)" : "var(--text-body)",
+    color: isActive ? "var(--accent)" : "var(--text-body)",
     cursor: "pointer",
     padding: mobile ? "14px 4px" : 0,
+    whiteSpace: "nowrap",
   });
 
   return (
@@ -73,10 +61,10 @@ export function AppHeader() {
           <Link href="/" style={{ display: "flex", alignItems: "center" }}>
             <BrandLogo height={mobile ? 38 : 36} />
           </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: mobile ? 10 : 26 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: mobile ? 10 : 20 }}>
             {!mobile &&
-              LINKS.map((l) => (
-                <Link key={l.id} href={l.href} style={linkStyle(l.id)}>
+              HEADER_NAV_LINKS.map((l) => (
+                <Link key={l.id} href={l.href} style={linkStyle(isNavActive(pathname, l))}>
                   {l.label}
                 </Link>
               ))}
@@ -108,7 +96,7 @@ export function AppHeader() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  background: open ? "rgba(217, 83, 30, 0.1)" : "transparent",
+                  background: open ? "rgba(181, 103, 61, 0.1)" : "transparent",
                   border: "1px solid " + (open ? "var(--accent)" : "var(--border-strong)"),
                   borderRadius: "var(--radius-pill)",
                   padding: 9,
@@ -134,8 +122,8 @@ export function AppHeader() {
           >
             <div style={{ overflow: "hidden", minHeight: 0 }}>
               <div style={{ display: "grid", padding: "6px 20px 16px" }}>
-                {LINKS.map((l) => (
-                  <Link key={l.id} href={l.href} onClick={() => setOpen(false)} style={{ ...linkStyle(l.id), borderBottom: "1px solid var(--border-divider)" }}>
+                {HEADER_NAV_LINKS.map((l) => (
+                  <Link key={l.id} href={l.href} onClick={() => setOpen(false)} style={{ ...linkStyle(isNavActive(pathname, l)), borderBottom: "1px solid var(--border-divider)" }}>
                     {l.label}
                   </Link>
                 ))}

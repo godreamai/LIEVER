@@ -327,7 +327,7 @@ export default function ContactoPage() {
                   width: 48,
                   height: 48,
                   borderRadius: 14,
-                  background: "rgba(217, 83, 30, 0.1)",
+                  background: "rgba(181, 103, 61, 0.1)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",

@@ -40,7 +40,7 @@ export function ProductCard({
       onTouchEnd={() => setActive(false)}
       style={{
         background: "var(--surface-card)",
-        border: `1px solid ${hover ? "rgba(217, 83, 30, 0.4)" : "var(--border-card)"}`,
+        border: `1px solid ${hover ? "rgba(181, 103, 61, 0.4)" : "var(--border-card)"}`,
         borderRadius: "var(--radius)",
         overflow: "hidden",
         display: "flex",

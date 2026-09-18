@@ -56,7 +56,7 @@ export function CategoryCard({
           background: "var(--bg-alt)",
           border: `2px solid ${hover ? "var(--accent)" : "rgba(34, 29, 26, 0.12)"}`,
           boxShadow: hover
-            ? "0 8px 22px rgba(217, 83, 30, 0.22)"
+            ? "0 8px 22px rgba(181, 103, 61, 0.22)"
             : "0 2px 8px rgba(34, 29, 26, 0.06)",
           transition: "border-color .2s ease, box-shadow .2s ease",
           marginBottom: 10,

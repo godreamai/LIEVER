@@ -109,7 +109,7 @@ export function CartDrawer() {
                 fontFamily: "var(--font-body)",
                 fontSize: 12,
                 fontWeight: 600,
-                background: "rgba(217, 83, 30, 0.1)",
+                background: "rgba(181, 103, 61, 0.1)",
                 color: "var(--accent)",
                 padding: "2px 8px",
                 borderRadius: "var(--radius-pill)",

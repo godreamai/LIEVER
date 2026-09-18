@@ -175,7 +175,7 @@ export default function Home() {
                     fontSize: 12,
                     fontWeight: 700,
                     color: "var(--accent)",
-                    background: "rgba(217, 83, 30, 0.08)",
+                    background: "rgba(181, 103, 61, 0.08)",
                     width: "fit-content",
                     padding: "4px 10px",
                     borderRadius: "var(--radius-pill)",

@@ -12,6 +12,12 @@ export interface Product {
   image: string | null;
   desc: string;
   specs: Spec[];
+  medidas?: string[];
+  colores?: string[];
+  personalizable?: boolean;
+  accesorios?: string[];
+  tiempoFabricacion?: string;
+  entrega?: { envio: boolean; retiro: boolean; nota?: string };
 }
 
 export interface Category {
