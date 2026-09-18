@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ds/Button";
 import { SectionTitle } from "@/components/ds/SectionTitle";
 import { ProductCard } from "@/components/ds/ProductCard";
@@ -17,6 +17,8 @@ const SORTS = [
   { id: "asc", label: "Precio ↑" },
   { id: "desc", label: "Precio ↓" },
 ];
+
+const PAGE_SIZE = 9;
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -52,9 +54,58 @@ function Choice({ active, onClick, children }: { active: boolean; onClick: () =>
   );
 }
 
+const pagerBtnStyle: React.CSSProperties = {
+  fontFamily: "var(--font-body)",
+  fontSize: 13,
+  fontWeight: 500,
+  padding: "8px 12px",
+  borderRadius: "var(--radius)",
+  border: "1px solid var(--border-card)",
+  background: "transparent",
+  color: "var(--text-body)",
+  cursor: "pointer",
+};
+
+const pagerBtnActiveStyle: React.CSSProperties = {
+  border: "1px solid var(--accent)",
+  background: "var(--surface-card)",
+  color: "var(--accent)",
+  fontWeight: 600,
+};
+
+function Pager({ page, totalPages, onChange }: { page: number; totalPages: number; onChange: (p: number) => void }) {
+  if (totalPages <= 1) return null;
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  return (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginTop: 32, flexWrap: "wrap" }}>
+      <button onClick={() => onChange(page - 1)} disabled={page === 1} style={{ ...pagerBtnStyle, opacity: page === 1 ? 0.4 : 1, cursor: page === 1 ? "default" : "pointer" }}>
+        ← Anterior
+      </button>
+      {pages.map((p) => (
+        <button key={p} onClick={() => onChange(p)} style={{ ...pagerBtnStyle, minWidth: 38, textAlign: "center", ...(p === page ? pagerBtnActiveStyle : {}) }}>
+          {p}
+        </button>
+      ))}
+      <button onClick={() => onChange(page + 1)} disabled={page === totalPages} style={{ ...pagerBtnStyle, opacity: page === totalPages ? 0.4 : 1, cursor: page === totalPages ? "default" : "pointer" }}>
+        Siguiente →
+      </button>
+    </div>
+  );
+}
+
 export function CatalogFilters({ products, categories }: { products: Product[]; categories: Category[] }) {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get("categoria") || "Todos";
+  const router = useRouter();
+  const pathname = usePathname();
+  const [openFilters, setOpenFilters] = useState(false);
+
+  // Todo el estado de filtros vive en la URL (?categoria=&precio=&q=&orden=&pagina=)
+  // en vez de useState local: así, si entrás a un producto y volvés con el botón
+  // "atrás" del navegador, la URL sigue siendo la misma y los filtros no se pierden.
+  const cat = searchParams.get("categoria") || "Todos";
+  const sort = searchParams.get("orden") || "rel";
+  const q = searchParams.get("q") || "";
+  const page = Math.max(1, Number(searchParams.get("pagina")) || 1);
 
   // Tope del slider de precio: el mayor entre $30.000 y el producto más caro
   // que haya cargado el admin, para que ningún producto quede inalcanzable.
@@ -62,21 +113,28 @@ export function CatalogFilters({ products, categories }: { products: Product[]; 
     const highest = products.reduce((m, p) => Math.max(m, p.price), 0);
     return Math.max(30000, Math.ceil(highest / 10000) * 10000);
   }, [products]);
+  const maxParam = searchParams.get("precio");
+  const max = maxParam ? Number(maxParam) : priceCeiling;
 
-  const [q, setQ] = useState("");
-  const [cat, setCat] = useState(initialCategory);
-  const [max, setMax] = useState(priceCeiling);
-  const [sort, setSort] = useState("rel");
-  const [openFilters, setOpenFilters] = useState(false);
+  const setParams = useCallback(
+    (updates: Record<string, string | null>, resetPage = true) => {
+      const params = new URLSearchParams(searchParams.toString());
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null || value === "") params.delete(key);
+        else params.set(key, value);
+      });
+      if (resetPage) params.delete("pagina");
+      const query = params.toString();
+      router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    },
+    [pathname, router, searchParams]
+  );
 
-  // Re-sync `cat` when the ?categoria= param changes (e.g. clicking a category
-  // card from Home) without remounting the whole filter state — adjusted during
-  // render instead of an effect, per https://react.dev/learn/you-might-not-need-an-effect
-  const [prevInitialCategory, setPrevInitialCategory] = useState(initialCategory);
-  if (initialCategory !== prevInitialCategory) {
-    setPrevInitialCategory(initialCategory);
-    setCat(initialCategory);
-  }
+  const setCat = (v: string) => setParams({ categoria: v === "Todos" ? null : v });
+  const setSort = (v: string) => setParams({ orden: v === "rel" ? null : v });
+  const setQ = (v: string) => setParams({ q: v || null });
+  const setMax = (v: number) => setParams({ precio: v === priceCeiling ? null : String(v) });
+  const setPage = (p: number) => setParams({ pagina: p === 1 ? null : String(p) }, false);
 
   const cats = ["Todos", ...categories.map((c) => c.name)];
   let rows = products.filter(
@@ -84,12 +142,12 @@ export function CatalogFilters({ products, categories }: { products: Product[]; 
   );
   if (sort === "asc") rows = [...rows].sort((a, b) => a.price - b.price);
   if (sort === "desc") rows = [...rows].sort((a, b) => b.price - a.price);
-  const clear = () => {
-    setQ("");
-    setCat("Todos");
-    setMax(priceCeiling);
-    setSort("rel");
-  };
+
+  const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paged = rows.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  const clear = () => router.replace(pathname, { scroll: false });
 
   const filters = (
     <div>
@@ -130,6 +188,9 @@ export function CatalogFilters({ products, categories }: { products: Product[]; 
     </div>
   );
 
+  const rangeStart = rows.length === 0 ? 0 : (safePage - 1) * PAGE_SIZE + 1;
+  const rangeEnd = Math.min(safePage * PAGE_SIZE, rows.length);
+
   return (
     <div data-screen-label="Catálogo">
       <div className="wrap" style={{ paddingBottom: 30 }}>
@@ -153,7 +214,8 @@ export function CatalogFilters({ products, categories }: { products: Product[]; 
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 18 }}>
               <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "var(--text-muted)" }}>
-                {rows.length} de {products.length} productos{cat !== "Todos" ? " · " + cat : ""}
+                {rows.length === 0 ? "0 productos" : `${rangeStart}–${rangeEnd} de ${rows.length} productos`}
+                {cat !== "Todos" ? " · " + cat : ""}
               </span>
               <span style={{ fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 500, color: "var(--text-technical)" }}>{SORTS.find((s) => s.id === sort)?.label}</span>
             </div>
@@ -167,13 +229,16 @@ export function CatalogFilters({ products, categories }: { products: Product[]; 
                 </Button>
               </Card>
             ) : (
-              <div className="grid g3">
-                {rows.map((p) => (
-                  <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
-                    <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} />
-                  </Link>
-                ))}
-              </div>
+              <>
+                <div className="grid g3">
+                  {paged.map((p) => (
+                    <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
+                      <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} />
+                    </Link>
+                  ))}
+                </div>
+                <Pager page={safePage} totalPages={totalPages} onChange={setPage} />
+              </>
             )}
           </div>
         </div>

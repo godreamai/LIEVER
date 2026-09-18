@@ -96,16 +96,23 @@ function splitCsv(text: string): string[] {
     .filter(Boolean);
 }
 
+// Normaliza "60x20" / "60 x 20" a "60 × 20" para que las medidas se vean
+// consistentes con las que ya estaban cargadas (ej: "30 × 18 cm"), sin
+// tocar texto libre como "medida especial" que no tiene números a los lados.
+function normalizeMeasure(input: string): string {
+  return input.trim().replace(/(\d)\s*[xX]\s*(\d)/g, "$1 × $2");
+}
+
 function toInput(form: FormState): ProductInput {
   return {
     slug: slugify(form.slug),
     name: form.name.trim(),
     price: Number(form.price),
-    measure: form.measure.trim(),
+    measure: normalizeMeasure(form.measure),
     categoryId: form.categoryId,
     desc: form.desc.trim(),
     specs: form.specs.filter((s) => s.label.trim() && s.value.trim()),
-    medidas: splitCsv(form.medidasText),
+    medidas: splitCsv(form.medidasText).map(normalizeMeasure),
     colores: splitCsv(form.coloresText),
     personalizable: form.personalizable,
     accesorios: splitCsv(form.accesoriosText),
@@ -162,6 +169,14 @@ const fieldLabelStyle: React.CSSProperties = {
   fontSize: 12,
   color: "var(--text-muted)",
   marginBottom: 6,
+};
+
+const hintTextStyle: React.CSSProperties = {
+  display: "block",
+  fontFamily: "var(--font-body)",
+  fontSize: 11.5,
+  color: "var(--text-muted)",
+  marginTop: 5,
 };
 
 const textareaStyle: React.CSSProperties = {
@@ -345,7 +360,10 @@ export function ProductsAdminClient({ products, categories }: { products: Produc
             <Input label="Nombre" value={editing.name} onChange={(e) => onNameChange(e.target.value)} placeholder="Ej: Repisa flotante 80 cm" mono={false} />
             <Input label="Slug (URL)" value={editing.slug} onChange={(e) => onSlugChange(e.target.value)} placeholder="repisa-flotante-80" />
             <Input label="Precio" type="number" value={editing.price} onChange={(e) => setEditing((f) => (f ? { ...f, price: e.target.value } : f))} placeholder="21300" />
-            <Input label="Medida" value={editing.measure} onChange={(e) => setEditing((f) => (f ? { ...f, measure: e.target.value } : f))} placeholder="60 × 12 cm" mono={false} />
+            <div>
+              <Input label="Medida" value={editing.measure} onChange={(e) => setEditing((f) => (f ? { ...f, measure: e.target.value } : f))} placeholder="60 × 12 cm" mono={false} />
+              <span style={hintTextStyle}>Escribí la unidad (cm/mm). &quot;60x12&quot; se guarda como &quot;60 × 12&quot;, agregale &quot; cm&quot; si corresponde.</span>
+            </div>
             <div>
               <span style={fieldLabelStyle}>Categoría</span>
               <select
@@ -399,6 +417,9 @@ export function ProductsAdminClient({ products, categories }: { products: Produc
 
           <div style={{ marginBottom: 18 }}>
             <span style={fieldLabelStyle}>Especificaciones técnicas</span>
+            <span style={{ ...hintTextStyle, marginTop: 0, marginBottom: 8 }}>
+              El valor es texto libre: escribilo completo, ej. &quot;Material&quot; → &quot;MDF 18 mm&quot; (no solo &quot;18mm&quot;).
+            </span>
             {editing.specs.map((s, i) => (
               <div key={i} style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "center" }}>
                 <Input value={s.label} onChange={(e) => updateSpec(i, "label", e.target.value)} placeholder="Material" mono={false} wrapStyle={{ flex: 1 }} />
