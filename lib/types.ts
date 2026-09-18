@@ -21,6 +21,7 @@ export interface Product {
 }
 
 export interface Category {
+  id: string;
   index: string;
   name: string;
   icon?: string;
@@ -56,10 +57,24 @@ export interface Order {
   zip: string;
 }
 
-export interface AdminProduct {
+// Modelo real de producto usado por el CRUD del admin (Supabase), a diferencia
+// del Product público que solo expone el nombre de categoría, no su id.
+export interface ProductAdmin {
+  id: string;
+  slug: string;
   name: string;
   price: number;
   measure: string;
-  stock: number;
+  categoryId: string | null;
+  categoryName: string | null;
   image: string | null;
+  desc: string;
+  specs: Spec[];
+  medidas?: string[];
+  colores?: string[];
+  personalizable?: boolean;
+  accesorios?: string[];
+  tiempoFabricacion?: string;
+  entrega?: { envio: boolean; retiro: boolean; nota?: string };
+  active: boolean;
 }

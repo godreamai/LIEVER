@@ -1,5 +1,5 @@
-import { money, PHOTOS } from "./data";
-import type { AdminProduct, Order, OrderStatus } from "./types";
+import { money } from "./data";
+import type { Order, OrderStatus } from "./types";
 
 export const ORDERS: Order[] = [
   { id: "#1042", customer: "Marina G.", phone: "+54 9 336 400-1122", summary: "Portarretratos roble ×2", status: "pendiente", total: 29000, date: "12/03 · 09:41", zip: "2900" },
@@ -44,15 +44,6 @@ export const ADMIN_NAV = [
   { id: "pedidos", label: "Pedidos", icon: "clipboard-list", href: "/admin/pedidos" },
   { id: "productos", label: "Productos", icon: "box", href: "/admin/productos" },
   { id: "envios", label: "Tarifas de envío", icon: "truck", href: "/admin/envios" },
-];
-
-export const ADMIN_PRODUCTS: AdminProduct[] = [
-  { name: "Portarretratos roble", price: 14500, measure: "30 × 18 cm", stock: 6, image: PHOTOS.router },
-  { name: "Cartel nombre a medida", price: 9800, measure: "40 × 12 cm", stock: 3, image: PHOTOS.panels },
-  { name: "Repisa flotante 60 cm", price: 21300, measure: "60 × 12 cm", stock: 4, image: PHOTOS.tools },
-  { name: "Set posavasos geométrico", price: 7200, measure: "10 × 10 cm", stock: 12, image: PHOTOS.wallart },
-  { name: "Organizador escritorio", price: 16900, measure: "28 × 14 cm", stock: 2, image: PHOTOS.workshop },
-  { name: "Cuadro geométrico 40 cm", price: 12400, measure: "40 × 40 cm", stock: 5, image: PHOTOS.wallart },
 ];
 
 export const SHIP_ZONES = [
