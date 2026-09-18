@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ds/Button";
@@ -56,9 +56,16 @@ export function CatalogFilters({ products, categories }: { products: Product[]; 
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("categoria") || "Todos";
 
+  // Tope del slider de precio: el mayor entre $30.000 y el producto más caro
+  // que haya cargado el admin, para que ningún producto quede inalcanzable.
+  const priceCeiling = useMemo(() => {
+    const highest = products.reduce((m, p) => Math.max(m, p.price), 0);
+    return Math.max(30000, Math.ceil(highest / 10000) * 10000);
+  }, [products]);
+
   const [q, setQ] = useState("");
   const [cat, setCat] = useState(initialCategory);
-  const [max, setMax] = useState(30000);
+  const [max, setMax] = useState(priceCeiling);
   const [sort, setSort] = useState("rel");
   const [openFilters, setOpenFilters] = useState(false);
 
@@ -80,7 +87,7 @@ export function CatalogFilters({ products, categories }: { products: Product[]; 
   const clear = () => {
     setQ("");
     setCat("Todos");
-    setMax(30000);
+    setMax(priceCeiling);
     setSort("rel");
   };
 
@@ -94,7 +101,7 @@ export function CatalogFilters({ products, categories }: { products: Product[]; 
         ))}
       </FilterGroup>
       <FilterGroup title="Precio hasta">
-        <input type="range" min="5000" max="30000" step="1000" value={max} onChange={(e) => setMax(+e.target.value)} style={{ width: "100%", accentColor: "var(--accent)" }} />
+        <input type="range" min="5000" max={priceCeiling} step="1000" value={max} onChange={(e) => setMax(+e.target.value)} style={{ width: "100%", accentColor: "var(--accent)" }} />
         <span style={{ fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{money(max)}</span>
       </FilterGroup>
       <FilterGroup title="Ordenar por">
