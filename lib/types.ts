@@ -5,6 +5,19 @@ export interface Spec {
   value: string;
 }
 
+// Seleccionable de un producto (ej: "Color"). Si `affectsPrice`, entra a la matriz de precios.
+export interface ProductOption {
+  name: string;
+  values: string[];
+  affectsPrice: boolean;
+}
+
+// Precio final de una combinación de opciones.
+export interface ProductVariant {
+  combo: Record<string, string>;
+  price: number;
+}
+
 export interface Product {
   slug: string;
   name: string;
@@ -15,12 +28,12 @@ export interface Product {
   image: string | null;
   desc: string;
   specs: Spec[];
-  medidas?: string[];
-  colores?: string[];
   personalizable?: boolean;
   accesorios?: string[];
   tiempoFabricacion?: string;
   entrega?: { envio: boolean; retiro: boolean; nota?: string };
+  options: ProductOption[];
+  variants: ProductVariant[];
 }
 
 export interface Category {
@@ -31,10 +44,12 @@ export interface Category {
 }
 
 export interface CartItem {
+  lineId: string; // slug + selección: el mismo producto con otras opciones es otra línea
   slug: string;
   name: string;
   price: number;
   measure: string;
+  selection?: Record<string, string>;
   image: string | null;
   qty: number;
 }
@@ -83,11 +98,11 @@ export interface ProductAdmin {
   image: string | null;
   desc: string;
   specs: Spec[];
-  medidas?: string[];
-  colores?: string[];
   personalizable?: boolean;
   accesorios?: string[];
   tiempoFabricacion?: string;
   entrega?: { envio: boolean; retiro: boolean; nota?: string };
+  options: ProductOption[];
+  variants: ProductVariant[];
   active: boolean;
 }

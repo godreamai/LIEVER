@@ -7,7 +7,7 @@ export interface PlaceOrderInput {
   customer: string;
   phone: string;
   zip: string;
-  items: { slug: string; qty: number }[];
+  items: { slug: string; qty: number; selection?: Record<string, string> }[];
 }
 
 export type PlaceOrderResult =
@@ -20,6 +20,7 @@ const ERRORS: Record<string, string> = {
   invalid_items: "Revisá las cantidades de tu carrito.",
   out_of_stock: "Alguno de los productos se quedó sin stock. Quitalo del carrito y probá de nuevo.",
   too_many_orders: "Hay muchos pedidos en este momento. Probá de nuevo en unos minutos.",
+  invalid_selection: "Alguna de las opciones elegidas ya no está disponible. Quitá el producto del carrito y volvé a elegirlo.",
   unknown_product: "Alguno de los productos ya no está disponible. Quitalo del carrito y probá de nuevo.",
 };
 

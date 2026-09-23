@@ -177,7 +177,7 @@ export function CartDrawer() {
           ) : (
             items.map((item) => (
               <div
-                key={item.slug}
+                key={item.lineId}
                 style={{
                   display: "flex",
                   gap: 14,
@@ -256,7 +256,7 @@ export function CartDrawer() {
                       }}
                     >
                       <button
-                        onClick={() => dec(item.slug)}
+                        onClick={() => dec(item.lineId)}
                         aria-label="Disminuir cantidad"
                         style={{
                           background: "transparent",
@@ -284,7 +284,7 @@ export function CartDrawer() {
                         {item.qty}
                       </span>
                       <button
-                        onClick={() => inc(item.slug)}
+                        onClick={() => inc(item.lineId)}
                         aria-label="Aumentar cantidad"
                         style={{
                           background: "transparent",
@@ -303,7 +303,7 @@ export function CartDrawer() {
                     </div>
 
                     <button
-                      onClick={() => remove(item.slug)}
+                      onClick={() => remove(item.lineId)}
                       aria-label="Eliminar producto"
                       style={{
                         background: "transparent",

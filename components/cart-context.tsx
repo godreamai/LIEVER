@@ -22,7 +22,8 @@ function readRaw(): string {
 function parse(raw: string): CartItem[] {
   try {
     const value = JSON.parse(raw);
-    return Array.isArray(value) ? value : [];
+    // Carritos guardados antes de los seleccionables no tienen lineId.
+    return Array.isArray(value) ? (value as CartItem[]).map((i) => ({ ...i, lineId: i.lineId ?? i.slug })) : [];
   } catch {
     return [];
   }
@@ -49,16 +50,23 @@ function writeItems(update: (current: CartItem[]) => CartItem[]) {
 
 interface CartContextValue {
   items: CartItem[];
-  add: (p: Product) => void;
-  inc: (slug: string) => void;
-  dec: (slug: string) => void;
-  remove: (slug: string) => void;
+  add: (p: Product, selection?: CartSelection) => void;
+  inc: (lineId: string) => void;
+  dec: (lineId: string) => void;
+  remove: (lineId: string) => void;
   clear: () => void;
   count: number;
   isDrawerOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
   lastAddedItem: CartItem | null;
+}
+
+// Opciones elegidas en la ficha: precio final de la combinación y su texto ("Medida: 150x70 · Color: Roble").
+export interface CartSelection {
+  price: number;
+  label: string;
+  values: Record<string, string>; // { Medida: "150x70", Color: "Roble" }: el servidor recalcula el precio con esto
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -69,12 +77,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [lastAddedItem, setLastAddedItem] = useState<CartItem | null>(null);
 
-  const add = (p: Product) => {
+  const add = (p: Product, selection?: CartSelection) => {
     const newItem: CartItem = {
+      lineId: selection ? `${p.slug}|${selection.label}` : p.slug,
       slug: p.slug,
       name: p.name,
-      price: p.price,
-      measure: p.measure,
+      price: selection?.price ?? p.price,
+      measure: selection?.label ?? p.measure,
+      selection: selection?.values,
       image: p.image,
       qty: 1,
     };
@@ -82,20 +92,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     trackEvent("add_to_cart", `/producto/${p.slug}`);
 
     writeItems((prev) => {
-      const exists = prev.find((i) => i.slug === p.slug);
-      if (exists) return prev.map((i) => (i.slug === p.slug ? { ...i, qty: i.qty + 1 } : i));
+      const exists = prev.find((i) => i.lineId === newItem.lineId);
+      if (exists) return prev.map((i) => (i.lineId === newItem.lineId ? { ...i, qty: i.qty + 1 } : i));
       return [...prev, newItem];
     });
 
     setIsDrawerOpen(true);
   };
 
-  const inc = (slug: string) => writeItems((prev) => prev.map((i) => (i.slug === slug ? { ...i, qty: i.qty + 1 } : i)));
+  const inc = (lineId: string) => writeItems((prev) => prev.map((i) => (i.lineId === lineId ? { ...i, qty: i.qty + 1 } : i)));
 
-  const dec = (slug: string) =>
-    writeItems((prev) => prev.flatMap((i) => (i.slug === slug ? (i.qty > 1 ? [{ ...i, qty: i.qty - 1 }] : []) : [i])));
+  const dec = (lineId: string) =>
+    writeItems((prev) => prev.flatMap((i) => (i.lineId === lineId ? (i.qty > 1 ? [{ ...i, qty: i.qty - 1 }] : []) : [i])));
 
-  const remove = (slug: string) => writeItems((prev) => prev.filter((i) => i.slug !== slug));
+  const remove = (lineId: string) => writeItems((prev) => prev.filter((i) => i.lineId !== lineId));
 
   const clear = () => writeItems(() => []);
 

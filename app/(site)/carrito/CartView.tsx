@@ -32,7 +32,7 @@ export function CartView({ zones }: { zones: ShippingZone[] }) {
   const total = subtotal + (shipping ?? 0);
   const canSubmit = customer.trim() !== "" && shipping !== null;
 
-  const lines = () => items.map((i) => `• ${i.name} ×${i.qty} — ${money(i.price * i.qty)}`).join("\n");
+  const lines = () => items.map((i) => `• ${i.name}${i.measure ? ` (${i.measure})` : ""} ×${i.qty} — ${money(i.price * i.qty)}`).join("\n");
 
   // Mismo pedido, sin número: para poder mandarlo por WhatsApp aunque falle el registro.
   const fallbackUrl =
@@ -47,7 +47,7 @@ export function CartView({ zones }: { zones: ShippingZone[] }) {
     // Se abre la pestaña ahora (dentro del clic) y se completa al confirmar el pedido: así el navegador no la bloquea.
     const tab = window.open("", "_blank");
     startSubmit(async () => {
-      const res = await placeOrderAction({ customer, phone, zip, items: items.map((i) => ({ slug: i.slug, qty: i.qty })) });
+      const res = await placeOrderAction({ customer, phone, zip, items: items.map((i) => ({ slug: i.slug, qty: i.qty, selection: i.selection })) });
       if (!res.ok) {
         tab?.close();
         setError(res.error);
@@ -112,15 +112,15 @@ export function CartView({ zones }: { zones: ShippingZone[] }) {
         <div>
           {items.map((i) => (
             <CartLineItem
-              key={i.slug}
+              key={i.lineId}
               name={i.name}
               qty={i.qty}
               measure={i.measure}
               price={i.price * i.qty}
               image={i.image}
-              onInc={() => inc(i.slug)}
-              onDec={() => dec(i.slug)}
-              onRemove={() => remove(i.slug)}
+              onInc={() => inc(i.lineId)}
+              onDec={() => dec(i.lineId)}
+              onRemove={() => remove(i.lineId)}
             />
           ))}
           <a
