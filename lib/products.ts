@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createPublicClient } from "@/lib/supabase/public";
-import type { Category, Product, ProductAdmin, Spec, StockStatus } from "@/lib/types";
+import type { Category, Product, ProductAdmin, ProductOption, ProductVariant, Spec, StockStatus } from "@/lib/types";
 
 interface ProductRow {
   id: string;
@@ -13,14 +13,14 @@ interface ProductRow {
   image: string | null;
   description: string;
   specs: Spec[] | null;
-  medidas: string[] | null;
-  colores: string[] | null;
   personalizable: boolean;
   accesorios: string[] | null;
   tiempo_fabricacion: string | null;
   envio: boolean;
   retiro: boolean;
   entrega_nota: string | null;
+  options: ProductOption[] | null;
+  variants: ProductVariant[] | null;
   active: boolean;
   stock_status: StockStatus | null;
   category: { id: string; name: string } | null;
@@ -39,12 +39,12 @@ function rowToProduct(row: ProductRow): Product {
     image: row.image,
     desc: row.description,
     specs: row.specs ?? [],
-    medidas: row.medidas ?? undefined,
-    colores: row.colores ?? undefined,
     personalizable: row.personalizable,
     accesorios: row.accesorios ?? undefined,
     tiempoFabricacion: row.tiempo_fabricacion ?? undefined,
     entrega: { envio: row.envio, retiro: row.retiro, nota: row.entrega_nota ?? undefined },
+    options: row.options ?? [],
+    variants: row.variants ?? [],
   };
 }
 
@@ -61,12 +61,12 @@ function rowToProductAdmin(row: ProductRow): ProductAdmin {
     image: row.image,
     desc: row.description,
     specs: row.specs ?? [],
-    medidas: row.medidas ?? undefined,
-    colores: row.colores ?? undefined,
     personalizable: row.personalizable,
     accesorios: row.accesorios ?? undefined,
     tiempoFabricacion: row.tiempo_fabricacion ?? undefined,
     entrega: { envio: row.envio, retiro: row.retiro, nota: row.entrega_nota ?? undefined },
+    options: row.options ?? [],
+    variants: row.variants ?? [],
     active: row.active,
   };
 }
