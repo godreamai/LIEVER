@@ -7,6 +7,7 @@ import { Icon } from "@/components/ds/Icon";
 import { SpecList } from "@/components/ds/SpecList";
 import { useCart } from "@/components/cart-context";
 import { WA } from "@/lib/data";
+import { findVariant, selectionLabel, type Combo } from "@/lib/options";
 import type { Product, Spec } from "@/lib/types";
 
 function VariantGroup({ label, options, value, onChange }: { label: string; options: string[]; value: string; onChange: (v: string) => void }) {
@@ -15,29 +16,32 @@ function VariantGroup({ label, options, value, onChange }: { label: string; opti
       <span style={{ display: "block", fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 600, letterSpacing: ".04em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 8 }}>
         {label}
       </span>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        aria-label={label}
+        style={{
+          width: "100%",
+          fontFamily: "var(--font-body)",
+          fontSize: 14,
+          fontWeight: 500,
+          padding: "11px 40px 11px 14px",
+          borderRadius: "var(--radius)",
+          cursor: "pointer",
+          border: "1px solid var(--border-strong)",
+          background: "var(--surface-card) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23857a72' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\") no-repeat right 14px center",
+          color: "var(--text-body)",
+          appearance: "none",
+          WebkitAppearance: "none",
+          outline: "none",
+        }}
+      >
         {options.map((opt) => (
-          <button
-            key={opt}
-            type="button"
-            onClick={() => onChange(opt)}
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: 13,
-              fontWeight: 500,
-              padding: "8px 14px",
-              borderRadius: "var(--radius-pill)",
-              cursor: "pointer",
-              border: "1px solid " + (value === opt ? "var(--accent)" : "var(--border-strong)"),
-              background: value === opt ? "var(--surface-card)" : "transparent",
-              color: value === opt ? "var(--accent)" : "var(--text-body)",
-              transition: "border-color .15s ease, color .15s ease",
-            }}
-          >
+          <option key={opt} value={opt}>
             {opt}
-          </button>
+          </option>
         ))}
-      </div>
+      </select>
     </div>
   );
 }
@@ -45,13 +49,16 @@ function VariantGroup({ label, options, value, onChange }: { label: string; opti
 export function AddToCart({ product }: { product: Product }) {
   const { add } = useCart();
   const [added, setAdded] = useState(false);
-  const [medida, setMedida] = useState(product.medidas?.[0] ?? product.measure);
-  const [color, setColor] = useState(product.colores?.[0] ?? "");
+
+  // Seleccionables dinámicos del producto (medida, color, etc.) y su precio por combinación.
+  const hasOptions = product.options.length > 0;
+  const [selection, setSelection] = useState<Combo>(() => Object.fromEntries(product.options.map((o) => [o.name, o.values[0]])));
+  const variant = hasOptions ? findVariant(product.options, product.variants, selection) : undefined;
+  const price = variant?.price ?? product.price;
 
   const customWa = WA + encodeURIComponent(`Hola Liever! Me interesa el modelo "${product.name}" y quiero personalizarlo (medida, color o terminación).`);
 
   const extraSpecs: Spec[] = [];
-  if (product.colores?.length) extraSpecs.push({ label: "Colores disponibles", value: product.colores.join(", ") });
   if (product.accesorios?.length) extraSpecs.push({ label: "Accesorios compatibles", value: product.accesorios.join(", ") });
   if (product.tiempoFabricacion) extraSpecs.push({ label: "Tiempo de fabricación", value: product.tiempoFabricacion });
   if (product.entrega) extraSpecs.push({ label: "Envío / retiro", value: product.entrega.nota ?? [product.entrega.envio && "Envío", product.entrega.retiro && "Retiro en taller"].filter(Boolean).join(" · ") });
@@ -59,24 +66,23 @@ export function AddToCart({ product }: { product: Product }) {
   return (
     <>
       <div style={{ marginBottom: 20 }}>
-        <Price value={product.price} size="lg" />
+        <Price value={price} size="lg" />
       </div>
       <p className="lead" style={{ color: "var(--text-muted)", margin: "0 0 26px" }}>
         {product.desc}
       </p>
 
-      {product.medidas && product.medidas.length > 1 && (
-        <VariantGroup label="Medida" options={product.medidas} value={medida} onChange={setMedida} />
-      )}
-      {product.colores && product.colores.length > 1 && (
-        <VariantGroup label="Color" options={product.colores} value={color} onChange={setColor} />
-      )}
+      {product.options
+        .filter((o) => o.values.length > 1)
+        .map((o) => (
+          <VariantGroup key={o.name} label={o.name} options={o.values} value={selection[o.name]} onChange={(v) => setSelection((s) => ({ ...s, [o.name]: v }))} />
+        ))}
 
       <div className="row" style={{ maxWidth: 340, justifyContent: "flex-start" }}>
         <Button
           full
           onClick={() => {
-            add(product);
+            add(product, hasOptions ? { price, label: selectionLabel(product.options, selection) } : undefined);
             setAdded(true);
             setTimeout(() => setAdded(false), 1600);
           }}

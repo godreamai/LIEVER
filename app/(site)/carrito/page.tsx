@@ -20,7 +20,7 @@ export default function CartPage() {
     WA +
     encodeURIComponent(
       "Hola! Te paso mi pedido:\n" +
-        items.map((i) => `• ${i.name} ×${i.qty} — ${money(i.price * i.qty)}`).join("\n") +
+        items.map((i) => `• ${i.name}${i.measure ? ` (${i.measure})` : ""} ×${i.qty} — ${money(i.price * i.qty)}`).join("\n") +
         `\nSubtotal: ${money(subtotal)}\nCP: ${zip} · envío estimado ${money(shipping)}\nTotal: ${money(subtotal + shipping)}`
     );
 
@@ -51,15 +51,15 @@ export default function CartPage() {
         <div>
           {items.map((i) => (
             <CartLineItem
-              key={i.slug}
+              key={i.lineId}
               name={i.name}
               qty={i.qty}
               measure={i.measure}
               price={i.price * i.qty}
               image={i.image}
-              onInc={() => inc(i.slug)}
-              onDec={() => dec(i.slug)}
-              onRemove={() => remove(i.slug)}
+              onInc={() => inc(i.lineId)}
+              onDec={() => dec(i.lineId)}
+              onRemove={() => remove(i.lineId)}
             />
           ))}
           <a

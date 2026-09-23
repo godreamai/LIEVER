@@ -6,9 +6,11 @@ import { Button } from "@/components/ds/Button";
 import { Icon } from "@/components/ds/Icon";
 import { Card } from "@/components/ds/Card";
 import { Input } from "@/components/ds/Input";
+import { Modal } from "@/components/ds/Modal";
 import { MdfSurface } from "@/components/ds/MdfSurface";
 import { AdminProductCard } from "@/components/ds/AdminProductCard";
 import { slugify } from "@/lib/slugify";
+import { OptionsEditor, draftsToOptions, optionsToDrafts, pricesToVariants, variantsToPrices, type OptionDraft, type VariantPrices } from "./OptionsEditor";
 import type { ProductAdmin, Spec } from "@/lib/types";
 import {
   createProductAction,
@@ -32,8 +34,6 @@ interface FormState {
   categoryId: string;
   desc: string;
   specs: Spec[];
-  medidasText: string;
-  coloresText: string;
   personalizable: boolean;
   accesoriosText: string;
   tiempoFabricacion: string;
@@ -41,6 +41,8 @@ interface FormState {
   retiro: boolean;
   entregaNota: string;
   image: string | null;
+  options: OptionDraft[];
+  variantPrices: VariantPrices;
 }
 
 function emptyForm(defaultCategoryId: string): FormState {
@@ -53,8 +55,6 @@ function emptyForm(defaultCategoryId: string): FormState {
     categoryId: defaultCategoryId,
     desc: "",
     specs: [],
-    medidasText: "",
-    coloresText: "",
     personalizable: false,
     accesoriosText: "",
     tiempoFabricacion: "",
@@ -62,6 +62,8 @@ function emptyForm(defaultCategoryId: string): FormState {
     retiro: true,
     entregaNota: "",
     image: null,
+    options: [],
+    variantPrices: {},
   };
 }
 
@@ -77,8 +79,6 @@ function fromProduct(p: ProductAdmin): FormState {
     categoryId: p.categoryId ?? "",
     desc: p.desc,
     specs: p.specs,
-    medidasText: (p.medidas ?? []).join(", "),
-    coloresText: (p.colores ?? []).join(", "),
     personalizable: p.personalizable ?? false,
     accesoriosText: (p.accesorios ?? []).join(", "),
     tiempoFabricacion: p.tiempoFabricacion ?? "",
@@ -86,6 +86,8 @@ function fromProduct(p: ProductAdmin): FormState {
     retiro: p.entrega?.retiro ?? true,
     entregaNota: p.entrega?.nota ?? "",
     image: p.image,
+    options: optionsToDrafts(p.options),
+    variantPrices: variantsToPrices(p.variants),
   };
 }
 
@@ -104,7 +106,10 @@ function normalizeMeasure(input: string): string {
 }
 
 function toInput(form: FormState): ProductInput {
+  const options = draftsToOptions(form.options);
   return {
+    options,
+    variants: pricesToVariants(options, form.variantPrices),
     slug: slugify(form.slug),
     name: form.name.trim(),
     price: Number(form.price),
@@ -112,8 +117,6 @@ function toInput(form: FormState): ProductInput {
     categoryId: form.categoryId,
     desc: form.desc.trim(),
     specs: form.specs.filter((s) => s.label.trim() && s.value.trim()),
-    medidas: splitCsv(form.medidasText).map(normalizeMeasure),
-    colores: splitCsv(form.coloresText),
     personalizable: form.personalizable,
     accesorios: splitCsv(form.accesoriosText),
     tiempoFabricacion: form.tiempoFabricacion.trim(),
@@ -349,9 +352,21 @@ export function ProductsAdminClient({ products, categories }: { products: Produc
       </Card>
 
       {editing && (
-        <Card style={{ padding: 22, marginBottom: 20 }}>
-          <h3 style={{ fontSize: 17, margin: "0 0 16px" }}>{editing.id ? "Editar producto" : "Nuevo producto"}</h3>
-
+        <Modal
+          title={editing.id ? "Editar producto" : "Nuevo producto"}
+          maxWidth={860}
+          onClose={closeEditor}
+          footer={
+            <div style={{ display: "flex", gap: 10, marginLeft: "auto" }}>
+              <Button variant="secondary" size="sm" onClick={closeEditor} type="button">
+                Cancelar
+              </Button>
+              <Button size="sm" onClick={submit} disabled={saving} type="button">
+                {saving ? "Guardando…" : "Guardar producto"}
+              </Button>
+            </div>
+          }
+        >
           {formError && (
             <div style={{ background: "var(--status-pendiente-bg)", color: "var(--status-pendiente-fg)", padding: "10px 14px", borderRadius: "var(--radius)", fontSize: 13, marginBottom: 16 }}>{formError}</div>
           )}
@@ -394,8 +409,6 @@ export function ProductsAdminClient({ products, categories }: { products: Produc
           </div>
 
           <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 14, marginBottom: 14 }}>
-            <Input label="Medidas disponibles (separadas por coma)" value={editing.medidasText} onChange={(e) => setEditing((f) => (f ? { ...f, medidasText: e.target.value } : f))} placeholder="60 × 60 cm, 120 × 60 cm" mono={false} />
-            <Input label="Colores disponibles (separados por coma)" value={editing.coloresText} onChange={(e) => setEditing((f) => (f ? { ...f, coloresText: e.target.value } : f))} placeholder="Roble natural, Nogal, Blanco" mono={false} />
             <Input label="Accesorios compatibles (separados por coma)" value={editing.accesoriosText} onChange={(e) => setEditing((f) => (f ? { ...f, accesoriosText: e.target.value } : f))} placeholder="Ganchos simples, Repisas flotantes" mono={false} />
             <Input label="Nota de envío / retiro" value={editing.entregaNota} onChange={(e) => setEditing((f) => (f ? { ...f, entregaNota: e.target.value } : f))} placeholder="Envío a todo el país · retiro en taller" mono={false} />
           </div>
@@ -414,6 +427,14 @@ export function ProductsAdminClient({ products, categories }: { products: Produc
               Retiro en taller
             </label>
           </div>
+
+          <OptionsEditor
+            options={editing.options}
+            prices={editing.variantPrices}
+            basePrice={Number(editing.price) || 0}
+            otherProducts={products.filter((p) => p.id !== editing.id)}
+            onChange={(options, variantPrices) => setEditing((f) => (f ? { ...f, options, variantPrices } : f))}
+          />
 
           <div style={{ marginBottom: 18 }}>
             <span style={fieldLabelStyle}>Especificaciones técnicas</span>
@@ -443,16 +464,8 @@ export function ProductsAdminClient({ products, categories }: { products: Produc
                 <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "var(--accent)", cursor: "pointer", textDecoration: "underline" }}>{uploading ? "Subiendo…" : "Subir imagen"}</span>
               </label>
             </div>
-            <div style={{ display: "flex", gap: 10, marginLeft: "auto" }}>
-              <Button variant="secondary" size="sm" onClick={closeEditor} type="button">
-                Cancelar
-              </Button>
-              <Button size="sm" onClick={submit} disabled={saving} type="button">
-                {saving ? "Guardando…" : "Guardar producto"}
-              </Button>
-            </div>
           </div>
-        </Card>
+        </Modal>
       )}
 
       {filtered.length === 0 ? (

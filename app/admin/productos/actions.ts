@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import type { Spec } from "@/lib/types";
+import { MAX_COMBOS, buildCombos } from "@/lib/options";
+import type { ProductOption, ProductVariant, Spec } from "@/lib/types";
 
 export interface ProductInput {
   slug: string;
@@ -12,8 +13,6 @@ export interface ProductInput {
   categoryId: string;
   desc: string;
   specs: Spec[];
-  medidas: string[];
-  colores: string[];
   personalizable: boolean;
   accesorios: string[];
   tiempoFabricacion: string;
@@ -21,6 +20,8 @@ export interface ProductInput {
   retiro: boolean;
   entregaNota: string;
   image: string | null;
+  options: ProductOption[];
+  variants: ProductVariant[];
 }
 
 export interface ActionResult {
@@ -38,14 +39,14 @@ function toRow(input: ProductInput) {
     image: input.image,
     description: input.desc,
     specs: input.specs,
-    medidas: input.medidas.length ? input.medidas : null,
-    colores: input.colores.length ? input.colores : null,
     personalizable: input.personalizable,
     accesorios: input.accesorios.length ? input.accesorios : null,
     tiempo_fabricacion: input.tiempoFabricacion || null,
     envio: input.envio,
     retiro: input.retiro,
     entrega_nota: input.entregaNota || null,
+    options: input.options,
+    variants: input.variants,
   };
 }
 
@@ -54,6 +55,18 @@ function validate(input: ProductInput): string | null {
   if (!input.slug.trim()) return "El slug es obligatorio.";
   if (!input.categoryId) return "Elegí una categoría.";
   if (!Number.isFinite(input.price) || input.price <= 0) return "El precio debe ser un número mayor a 0.";
+
+  const names = new Set<string>();
+  for (const o of input.options) {
+    const name = o.name.trim();
+    if (!name) return "Todos los seleccionables necesitan un nombre.";
+    if (names.has(name)) return `El seleccionable "${name}" está repetido.`;
+    names.add(name);
+    if (o.values.length === 0) return `El seleccionable "${name}" no tiene opciones.`;
+    if (new Set(o.values).size !== o.values.length) return `El seleccionable "${name}" tiene opciones repetidas.`;
+  }
+  if (buildCombos(input.options).length > MAX_COMBOS) return `Demasiadas combinaciones con precio (máximo ${MAX_COMBOS}). Marcá alguna opción como "sin precio".`;
+  if (input.variants.some((v) => !Number.isFinite(v.price) || v.price <= 0)) return "Los precios de la matriz deben ser mayores a 0.";
   return null;
 }
 
