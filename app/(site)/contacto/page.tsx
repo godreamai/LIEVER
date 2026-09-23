@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ds/Button";
@@ -6,6 +7,7 @@ import { SectionTitle } from "@/components/ds/SectionTitle";
 import { Icon } from "@/components/ds/Icon";
 import { Accordion, type AccordionItem } from "@/components/ds/Accordion";
 import { WA, PHONE, PHONE_RAW, INSTAGRAM, INSTAGRAM_EVENTOS, ADDRESS, MAPS_URL, HOURS_WEEKDAY, HOURS_SAT } from "@/lib/data";
+import { ContactForm } from "./ContactForm";
 
 const FAQ_ITEMS: AccordionItem[] = [
   {
@@ -59,6 +61,11 @@ const FAQ_ITEMS: AccordionItem[] = [
     ),
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Contacto",
+  description: "Escribinos por WhatsApp, llamanos o pasá por el taller en Garibaldi 203, San Nicolás de los Arroyos. Consultá tu proyecto.",
+};
 
 export default function ContactoPage() {
   const waUrl = WA + encodeURIComponent("Hola Liever! Quisiera hacer una consulta.");
@@ -141,6 +148,12 @@ export default function ContactoPage() {
             Escribinos por WhatsApp
           </Button>
         </div>
+      </section>
+
+      {/* Formulario de cotización */}
+      <section className="wrap center" style={{ padding: "70px 20px 60px" }}>
+        <SectionTitle eyebrow="Pedí una solución" title="Contanos tu proyecto" size="lg" style={{ textAlign: "center" }} />
+        <ContactForm />
       </section>
 
       {/* Info Cards Grid (4 Channels) en fondo suave alternado */}
@@ -327,7 +340,7 @@ export default function ContactoPage() {
                   width: 48,
                   height: 48,
                   borderRadius: 14,
-                  background: "rgba(217, 83, 30, 0.1)",
+                  background: "rgba(181, 103, 61, 0.1)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",

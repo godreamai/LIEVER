@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Zilla_Slab, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/cart-context";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const zillaSlab = Zilla_Slab({
   subsets: ["latin"],
@@ -25,8 +26,10 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Liever — corte CNC en maderas",
-  description: "Piezas de madera cortadas con exactitud milimétrica. Decoración, cartelería y muebles a medida.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: "LIEVER — Mobiliario, paneles ranurados y diseño a medida", template: "%s | LIEVER" },
+  description: SITE_DESCRIPTION,
+  openGraph: { siteName: SITE_NAME, locale: "es_AR", type: "website", images: [{ url: "/logo.png" }] },
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -43,7 +46,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${zillaSlab.variable} ${inter.variable} ${plexMono.variable}`}>
-      <body>
+      <body suppressHydrationWarning>
         <CartProvider>{children}</CartProvider>
       </body>
     </html>

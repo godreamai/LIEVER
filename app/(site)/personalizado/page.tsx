@@ -1,22 +1,22 @@
-import Link from "next/link";
+import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ds/Button";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { SectionTitle } from "@/components/ds/SectionTitle";
 import { Icon } from "@/components/ds/Icon";
 import { Card } from "@/components/ds/Card";
-import { PHOTOS, WA } from "@/lib/data";
+import { ProductCard } from "@/components/ds/ProductCard";
+import { WA } from "@/lib/data";
+import { getPublicProducts } from "@/lib/products";
 
-const WORKS = [
-  { src: PHOTOS.wallart, alt: "Panel decorativo de listones", label: "Panel decorativo", slug: "cuadro-geometrico" },
-  { src: PHOTOS.panels, alt: "Paneles calados", label: "Calados geométricos", slug: "cartel-nombre" },
-  { src: PHOTOS.router, alt: "Corte en proceso", label: "Corte CNC de precisión", slug: "portarretratos-roble" },
-  { src: PHOTOS.tools, alt: "Herramientas sobre tablero", label: "Tableros organizadores", slug: "repisa-flotante" },
-  { src: PHOTOS.workshop, alt: "Máquina CNC en el taller", label: "Mecanizado a medida", slug: "organizador-escritorio" },
-  { src: null, alt: "Tu proyecto", label: "Tu propio diseño", slug: null },
-];
+export const metadata: Metadata = {
+  title: "Trabajos a medida",
+  description: "Pedinos una pieza personalizada: medida, color, logo o un diseño propio. Te asesoramos y te pasamos un presupuesto.",
+};
 
-export default function CustomLanding() {
+export default async function CustomLanding() {
+  const personalizables = (await getPublicProducts().catch(() => [])).filter((p) => p.personalizable);
   const waCustom = WA + encodeURIComponent("Hola Liever! Quiero consultar por un trabajo personalizado. Tengo una idea / medidas para pasarles.");
 
   return (
@@ -74,63 +74,19 @@ export default function CustomLanding() {
         </div>
       </section>
 
-      {/* Galería de trabajos en fondo blanco cálido */}
-      <section style={{ background: "var(--surface-page)", padding: "70px 20px" }}>
-        <div className="wrap wrap--narrow center" style={{ padding: 0 }}>
-          <SectionTitle eyebrow="Inspiración" title="Trabajos y posibilidades del taller" size="lg" style={{ textAlign: "center", marginBottom: 10 }} />
-          <p style={{ color: "var(--text-muted)", fontSize: 14, margin: "0 0 36px", textAlign: "center" }}>
-            Algunas de las piezas que fabricamos con nuestra fresadora CNC
-          </p>
-
-          <div className="grid g3" style={{ gap: 24 }}>
-            {WORKS.map((w, i) => {
-              const inner = (
-                <div
-                  style={{
-                    background: "var(--surface-card)",
-                    border: "1px solid var(--border-card)",
-                    borderRadius: "var(--radius)",
-                    overflow: "hidden",
-                    boxShadow: "var(--shadow-card)",
-                    transition: "transform .2s ease, box-shadow .2s ease, border-color .2s ease",
-                    cursor: "pointer",
-                  }}
-                >
-                  <div style={{ position: "relative", height: 190, background: "var(--bg-alt)", overflow: "hidden" }}>
-                    {w.src ? (
-                      <Image
-                        src={w.src}
-                        alt={w.alt}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        style={{ objectFit: "cover" }}
-                      />
-                    ) : (
-                      <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(217,83,30,.06)", color: "var(--accent)", fontWeight: 600 }}>
-                        + Tu proyecto aquí
-                      </div>
-                    )}
-                  </div>
-                  <div style={{ padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{w.label}</span>
-                    <span style={{ fontSize: 12, fontWeight: 600, color: "var(--accent)" }}>{w.slug ? "Ver modelo →" : "Cotizar →"}</span>
-                  </div>
-                </div>
-              );
-
-              return w.slug ? (
-                <Link key={i} href={`/producto/${w.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
-                  {inner}
-                </Link>
-              ) : (
-                <a key={i} href={waCustom} target="_blank" rel="noreferrer" style={{ color: "inherit", textDecoration: "none" }}>
-                  {inner}
-                </a>
-              );
-            })}
+      {personalizables.length > 0 && (
+        <section className="wrap center" style={{ padding: "70px 20px" }}>
+          <SectionTitle eyebrow="Punto de partida" title="Productos que podés personalizar" size="lg" style={{ textAlign: "center", marginBottom: 10 }} />
+          <p style={{ color: "var(--text-muted)", fontSize: 14, margin: "0 0 32px" }}>Elegí uno y pedinos la medida, el color o el logo que necesitás.</p>
+          <div className="grid g4">
+            {personalizables.map((p) => (
+              <Link key={p.slug} href={`/producto/${p.slug}`} style={{ color: "inherit" }}>
+                <ProductCard name={p.name} price={p.price} measure={p.measure} category={p.category} image={p.image} stock={p.stock} />
+              </Link>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Qué necesitamos para cotizar en fondo suave alternado (Contraste claro) */}
       <section style={{ background: "var(--surface-alt)", padding: "70px 20px", borderTop: "1px solid var(--border-hairline)", borderBottom: "1px solid var(--border-hairline)" }}>
@@ -175,7 +131,7 @@ export default function CustomLanding() {
                     width: 48,
                     height: 48,
                     borderRadius: 14,
-                    background: "rgba(217,83,30,.08)",
+                    background: "rgba(181,103,61,.08)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",

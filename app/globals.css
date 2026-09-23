@@ -6,7 +6,7 @@
   --wood-dark: #6e4429;
   --ink: #221d1a;
   --ink-soft: #5c534c;
-  --accent: #d9531e;
+  --accent: #b5673d;
   --line: #3d5a63;
   --white: #ffffff;
 
@@ -40,7 +40,7 @@
   --text-price: var(--accent);
   --text-technical: var(--line);
   --action-primary: var(--accent);
-  --action-primary-hover: #c24817;
+  --action-primary-hover: #97552f;
   --action-primary-fg: var(--white);
   --action-secondary-fg: var(--ink);
   --border-hairline: rgba(34, 29, 26, 0.06);
@@ -62,8 +62,8 @@
   --shadow-float: 0 8px 26px rgba(0, 0, 0, 0.18);
   --shadow-card: 0 4px 16px rgba(34, 29, 26, 0.05), 0 1px 3px rgba(34, 29, 26, 0.03);
   --shadow-card-hover: 0 14px 36px rgba(34, 29, 26, 0.12), 0 2px 8px rgba(34, 29, 26, 0.04);
-  --shadow-btn-primary: 0 4px 14px rgba(217, 83, 30, 0.26);
-  --shadow-btn-hover: 0 6px 18px rgba(217, 83, 30, 0.36);
+  --shadow-btn-primary: 0 4px 14px rgba(181, 103, 61, 0.26);
+  --shadow-btn-hover: 0 6px 18px rgba(181, 103, 61, 0.36);
   --transition-fast: 0.15s ease;
   --transition-hover: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
   --fab-size: 56px;
@@ -212,12 +212,6 @@ img {
   align-items: center;
   justify-content: center;
 }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 14px 34px;
-  justify-content: center;
-}
 .admin-shell {
   display: flex;
   min-height: 100vh;
@@ -288,7 +282,7 @@ img {
   margin: 0 auto;
   padding: 56px 32px 48px;
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1.2fr;
+  grid-template-columns: 1.3fr 0.85fr 0.85fr 1.1fr;
   gap: 40px 32px;
 }
 .site-footer-col {
@@ -310,6 +304,46 @@ img {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+/* --- Home: Necesidades (círculos, mismo lenguaje visual que Categorías) --- */
+.need-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: 200px;
+  color: inherit;
+  text-decoration: none;
+}
+.need-card-circle {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-alt);
+  border: 2px solid rgba(34, 29, 26, 0.12);
+  box-shadow: 0 2px 8px rgba(34, 29, 26, 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.need-card-img {
+  object-fit: cover;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.need-card-title {
+  transition: color 0.18s ease;
+}
+.need-card:hover .need-card-circle {
+  border-color: var(--accent);
+  box-shadow: 0 8px 22px rgba(181, 103, 61, 0.22);
+}
+.need-card:hover .need-card-img {
+  transform: scale(1.12);
+}
+.need-card:hover .need-card-title {
+  color: var(--accent);
 }
 
 /* --- Home: Custom Banner & Steps Layout --- */
@@ -346,36 +380,9 @@ img {
 .home-step-item:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-card-hover);
-  border-color: rgba(217, 83, 30, 0.35);
+  border-color: rgba(181, 103, 61, 0.35);
 }
 
-/* --- Home: Process Timeline Grid with Connecting Arrows --- */
-.home-process-grid {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr;
-  gap: 12px;
-  align-items: center;
-  width: 100%;
-}
-
-.home-step-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.home-step-arrow-circle {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--surface-card);
-  border: 1px solid rgba(217, 83, 30, 0.28);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(34, 29, 26, 0.06);
-  color: var(--accent);
-}
 
 /* --- Media Queries --- */
 @media (max-width: 1040px) {
@@ -385,6 +392,9 @@ img {
 }
 
 @media (max-width: 900px) {
+  .site-footer-container {
+    grid-template-columns: 1fr 1fr;
+  }
   .catalog-layout {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -439,14 +449,6 @@ img {
 }
 
 @media (max-width: 768px) {
-  .home-process-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .home-step-arrow {
-    transform: rotate(90deg);
-    margin: 2px 0;
-  }
   .home-custom-grid {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -492,10 +494,6 @@ img {
   .g3 {
     grid-template-columns: 1fr;
   }
-  .stats {
-    grid-template-columns: 1fr;
-    justify-items: center;
-  }
   .row {
     flex-direction: column;
     align-items: stretch;
@@ -536,4 +534,29 @@ img {
 .btn--secondary:hover {
   box-shadow: 0 6px 18px rgba(34, 29, 26, 0.1) !important;
   transform: translateY(-2px);
+}
+
+/* Home: categorías en una sola fila (scroll horizontal en pantallas chicas) */
+.home-cat-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+.home-cat-row .need-card {
+  flex: 1 1 0;
+  min-width: 120px;
+  max-width: 170px;
+}
+@media (max-width: 900px) {
+  .home-cat-row {
+    justify-content: flex-start;
+  }
+  .home-cat-row .need-card {
+    flex: 0 0 130px;
+  }
 }

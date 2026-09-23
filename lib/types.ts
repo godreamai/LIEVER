@@ -1,3 +1,5 @@
+export type StockStatus = "disponible" | "a_pedido" | "sin_stock";
+
 export interface Spec {
   label: string;
   value: string;
@@ -9,15 +11,21 @@ export interface Product {
   price: number;
   measure: string;
   category: string;
+  stock: StockStatus;
   image: string | null;
   desc: string;
   specs: Spec[];
+  medidas?: string[];
+  colores?: string[];
+  personalizable?: boolean;
+  accesorios?: string[];
+  tiempoFabricacion?: string;
+  entrega?: { envio: boolean; retiro: boolean; nota?: string };
 }
 
 export interface Category {
-  index: string;
+  id: string;
   name: string;
-  icon?: string;
   image?: string | null;
   count: number;
 }
@@ -39,21 +47,47 @@ export type OrderStatus =
   | "entregado"
   | "cancelado";
 
+export interface OrderItem {
+  slug: string;
+  name: string;
+  price: number;
+  qty: number;
+}
+
 export interface Order {
   id: string;
+  /** Número visible para el cliente y el admin (#1001, #1002…). */
+  number: number;
   customer: string;
   phone: string;
   summary: string;
+  items: OrderItem[];
   status: OrderStatus;
   total: number;
-  date: string;
+  /** ISO 8601. */
+  createdAt: string;
   zip: string;
 }
 
-export interface AdminProduct {
+// Modelo real de producto usado por el CRUD del admin (Supabase), a diferencia
+// del Product público que solo expone el nombre de categoría, no su id.
+export interface ProductAdmin {
+  id: string;
+  slug: string;
   name: string;
   price: number;
   measure: string;
-  stock: number;
+  categoryId: string | null;
+  categoryName: string | null;
+  stock: StockStatus;
   image: string | null;
+  desc: string;
+  specs: Spec[];
+  medidas?: string[];
+  colores?: string[];
+  personalizable?: boolean;
+  accesorios?: string[];
+  tiempoFabricacion?: string;
+  entrega?: { envio: boolean; retiro: boolean; nota?: string };
+  active: boolean;
 }

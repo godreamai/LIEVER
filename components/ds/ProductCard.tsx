@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Price } from "./Price";
+import { stockBadge } from "@/lib/stock";
+import type { StockStatus } from "@/lib/types";
 
 export function ProductCard({
   name,
@@ -10,6 +12,7 @@ export function ProductCard({
   measure,
   category,
   image,
+  stock = "disponible",
   thumbHeight = 180,
   onClick,
   style,
@@ -19,6 +22,7 @@ export function ProductCard({
   measure?: string;
   category?: string;
   image: string | null;
+  stock?: StockStatus;
   thumbHeight?: number;
   onClick?: () => void;
   style?: React.CSSProperties;
@@ -40,7 +44,7 @@ export function ProductCard({
       onTouchEnd={() => setActive(false)}
       style={{
         background: "var(--surface-card)",
-        border: `1px solid ${hover ? "rgba(217, 83, 30, 0.4)" : "var(--border-card)"}`,
+        border: `1px solid ${hover ? "rgba(181, 103, 61, 0.4)" : "var(--border-card)"}`,
         borderRadius: "var(--radius)",
         overflow: "hidden",
         display: "flex",
@@ -88,6 +92,25 @@ export function ProductCard({
           >
             Liever
           </div>
+        )}
+
+        {stockBadge(stock) && (
+          <span
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 10,
+              background: stock === "sin_stock" ? "var(--ink)" : "var(--accent)",
+              color: "#ffffff",
+              fontFamily: "var(--font-body)",
+              fontSize: 11,
+              fontWeight: 600,
+              padding: "3px 9px",
+              borderRadius: "var(--radius-pill)",
+            }}
+          >
+            {stockBadge(stock)}
+          </span>
         )}
 
         {/* Measure badge */}

@@ -74,7 +74,7 @@ export function OrdersTable({
       <tbody>
         {orders.map((o) => (
           <tr key={o.id}>
-            <td style={{ ...td, fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--text-muted)" }}>{o.id}</td>
+            <td style={{ ...td, fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--text-muted)" }}>{"#" + o.number}</td>
             <td style={{ ...td, fontWeight: 500 }}>{o.customer}</td>
             <td style={td}>{o.summary}</td>
             <td style={td}>

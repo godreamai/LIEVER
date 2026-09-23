@@ -2,12 +2,10 @@
 
 import React, { useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "../cart-context";
 import { Icon } from "./Icon";
 import { Button } from "./Button";
-import { WA } from "@/lib/data";
 
 export function CartDrawer() {
   const router = useRouter();
@@ -35,16 +33,6 @@ export function CartDrawer() {
   }, [isDrawerOpen]);
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-
-  const buildWaMessage = () => {
-    let msg = "¡Hola Liever! Quiero realizar este pedido:\n\n";
-    items.forEach((item) => {
-      msg += `• ${item.qty}x ${item.name} (${item.measure || "estándar"}) — $${(item.price * item.qty).toLocaleString("es-AR")}\n`;
-    });
-    msg += `\nSubtotal: $${subtotal.toLocaleString("es-AR")}\n`;
-    msg += "¿Cómo coordinamos el pago y envío?";
-    return WA + encodeURIComponent(msg);
-  };
 
   const handleGoToCart = () => {
     closeDrawer();
@@ -109,7 +97,7 @@ export function CartDrawer() {
                 fontFamily: "var(--font-body)",
                 fontSize: 12,
                 fontWeight: 600,
-                background: "rgba(217, 83, 30, 0.1)",
+                background: "rgba(181, 103, 61, 0.1)",
                 color: "var(--accent)",
                 padding: "2px 8px",
                 borderRadius: "var(--radius-pill)",
@@ -182,7 +170,7 @@ export function CartDrawer() {
               <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 20px", maxWidth: 240 }}>
                 Explorá nuestros productos y sumalos a tu pedido.
               </p>
-              <Button as="a" href="/catalogo" size="sm" onClick={closeDrawer}>
+              <Button as="a" href="/productos" size="sm" onClick={closeDrawer}>
                 Ver productos
               </Button>
             </div>
@@ -366,18 +354,8 @@ export function CartDrawer() {
               </span>
             </div>
 
-            <Button
-              as="a"
-              href={buildWaMessage()}
-              target="_blank"
-              full
-              icon={<Icon name="message-circle" size={16} color="var(--white)" />}
-            >
-              Pedir por WhatsApp
-            </Button>
-
-            <Button full variant="secondary" size="sm" onClick={handleGoToCart}>
-              Ver carrito y calcular envío
+            <Button full onClick={handleGoToCart} icon={<Icon name="shopping-cart" size={16} color="var(--white)" />}>
+              Finalizar pedido y calcular envío
             </Button>
 
             <button

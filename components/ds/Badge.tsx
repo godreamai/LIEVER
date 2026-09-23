@@ -10,8 +10,6 @@ const STATUS: Record<string, { label: string; bg: string; fg: string }> = {
   cancelado: { label: "Cancelado", bg: "rgba(42,36,32,.10)", fg: "var(--ink-soft)" },
 };
 
-export const ORDER_STATUSES = Object.keys(STATUS);
-
 export function Badge({
   status = "pendiente",
   children,
