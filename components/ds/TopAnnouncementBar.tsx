@@ -3,7 +3,7 @@
 import React from "react";
 
 const ANNOUNCEMENTS = [
-  "Envíos a todo el país · Costo estimado con tu código postal",
+  "Envíos a todo el país · Costo a coordinar por WhatsApp",
   "Retiro sin cargo en nuestro taller: Garibaldi 203, San Nicolás",
   "Diseños y medidas 100% personalizados para tu espacio",
 ];

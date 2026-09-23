@@ -64,7 +64,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <AddToCart product={p} />
             <div style={{ marginTop: 22, display: "flex", gap: 8, alignItems: "center", justifyContent: "center", fontFamily: "var(--font-body)", fontSize: 13, color: "var(--text-technical)" }}>
               <Icon name="truck" size={15} color="var(--line)" />
-              Envío a todo el país · costo estimado con tu CP
+              Envío a todo el país · costo a coordinar por WhatsApp
             </div>
           </div>
         </div>

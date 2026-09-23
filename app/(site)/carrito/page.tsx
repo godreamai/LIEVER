@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { CartLineItem } from "@/components/ds/CartLineItem";
 import { CartSummary } from "@/components/ds/CartSummary";
 import { Button } from "@/components/ds/Button";
@@ -9,19 +8,16 @@ import { Icon } from "@/components/ds/Icon";
 import { MdfSurface } from "@/components/ds/MdfSurface";
 import { useCart } from "@/components/cart-context";
 import { PHOTOS, WA, money } from "@/lib/data";
-import { ZONES } from "@/lib/adminData";
 
 export default function CartPage() {
   const { items, inc, dec, remove } = useCart();
-  const [zip, setZip] = useState("2900");
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-  const shipping = subtotal === 0 ? 0 : ZONES[zip] || 7400;
   const waOrder =
     WA +
     encodeURIComponent(
       "Hola! Te paso mi pedido:\n" +
         items.map((i) => `• ${i.name}${i.measure ? ` (${i.measure})` : ""} ×${i.qty} — ${money(i.price * i.qty)}`).join("\n") +
-        `\nSubtotal: ${money(subtotal)}\nCP: ${zip} · envío estimado ${money(shipping)}\nTotal: ${money(subtotal + shipping)}`
+        `\nSubtotal: ${money(subtotal)}\n¿Me confirmás el costo de envío y cómo coordinamos?`
     );
 
   if (items.length === 0) {
@@ -76,12 +72,8 @@ export default function CartPage() {
         </div>
         <CartSummary
           subtotal={subtotal}
-          shipping={shipping}
-          total={subtotal + shipping}
-          zip={zip}
-          onZipChange={(e) => setZip(e.target.value)}
           onSubmit={() => window.open(waOrder, "_blank")}
-          note="El envío es estimado por zona. Se confirma por WhatsApp antes de despachar."
+          note="El costo de envío te lo confirma un asesor por WhatsApp según tu código postal, antes de despachar."
         />
       </div>
       <style>{"@media(max-width:900px){[data-screen-label='Carrito']>.grid{grid-template-columns:1fr!important}}"}</style>

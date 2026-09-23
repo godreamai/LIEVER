@@ -25,7 +25,7 @@ const FAQ_ITEMS: AccordionItem[] = [
     title: "¿Cómo funcionan los envíos y los costos?",
     content: (
       <span>
-        Hacemos envíos a todo el país por correo y flete. Al pasarnos tu código postal, te calculamos el costo exacto antes de confirmar el pedido. Todas las piezas van embaladas con protección reforzada para asegurar que lleguen impecables.
+        Hacemos envíos a todo el país por correo y flete. Un asesor te confirma el costo por WhatsApp, según tu código postal, antes de confirmar el pedido. Todas las piezas van embaladas con protección reforzada para asegurar que lleguen impecables.
       </span>
     ),
   },

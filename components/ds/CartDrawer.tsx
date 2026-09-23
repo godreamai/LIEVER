@@ -377,7 +377,7 @@ export function CartDrawer() {
             </Button>
 
             <Button full variant="secondary" size="sm" onClick={handleGoToCart}>
-              Ver carrito y calcular envío
+              Ver carrito
             </Button>
 
             <button

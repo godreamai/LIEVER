@@ -1,6 +1,5 @@
 import React from "react";
 import { Card } from "./Card";
-import { Input } from "./Input";
 import { Button } from "./Button";
 import { Icon } from "./Icon";
 
@@ -12,21 +11,14 @@ const row: React.CSSProperties = {
   padding: "6px 0",
 };
 
+// El costo de envío no se calcula en la web: lo confirma un asesor por WhatsApp.
 export function CartSummary({
   subtotal,
-  shipping,
-  total,
-  zip = "",
-  onZipChange,
   onSubmit,
   note,
   style,
 }: {
   subtotal: number;
-  shipping: number;
-  total: number;
-  zip?: string;
-  onZipChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit?: () => void;
   note?: string;
   style?: React.CSSProperties;
@@ -35,18 +27,17 @@ export function CartSummary({
   return (
     <Card style={{ padding: 26, alignSelf: "start", ...style }}>
       <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 17, margin: "0 0 18px" }}>Resumen</h3>
-      <Input label="Código postal" placeholder="Ej: 2900" value={zip} onChange={onZipChange} wrapStyle={{ marginBottom: 14 }} />
       <div style={row}>
         <span>Subtotal</span>
         <span>{fmt(subtotal)}</span>
       </div>
       <div style={row}>
-        <span>Envío estimado</span>
-        <span>{fmt(shipping)}</span>
+        <span>Envío</span>
+        <span style={{ color: "var(--text-muted)" }}>A coordinar por WhatsApp</span>
       </div>
       <div style={{ ...row, fontWeight: 700, fontSize: 17, borderTop: "1px solid rgba(42,36,32,.15)", marginTop: 10, paddingTop: 14 }}>
-        <span>Total</span>
-        <span>{fmt(total)}</span>
+        <span>Total sin envío</span>
+        <span>{fmt(subtotal)}</span>
       </div>
       <Button full style={{ marginTop: 16 }} onClick={onSubmit} icon={<Icon name="message-circle" size={16} color="var(--white)" />}>
         Enviar pedido por WhatsApp
