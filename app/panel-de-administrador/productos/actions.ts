@@ -79,7 +79,7 @@ function revalidateStorefront(slug: string) {
   revalidatePath("/");
   revalidatePath("/productos");
   revalidatePath(`/producto/${slug}`);
-  revalidatePath("/admin/productos");
+  revalidatePath("/panel-de-administrador/productos");
 }
 
 export async function createProductAction(input: ProductInput): Promise<ActionResult> {

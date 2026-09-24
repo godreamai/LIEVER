@@ -158,13 +158,16 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           }}>
             © {new Date().getFullYear()} Liever — San Nicolás de los Arroyos
           </span>
-          <Link
-            href="/admin"
-            className="footer-admin-link"
+          <a
+            href="https://www.godreamai.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-credit"
           >
-            <Icon name="settings" size={12} color="currentColor" />
-            Panel de administración
-          </Link>
+            Una solución creada por
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-godreamai-footer.png" alt="Go Dream AI" className="footer-credit-logo" />
+          </a>
         </div>
       </footer>
 

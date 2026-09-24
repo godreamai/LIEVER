@@ -1,17 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { AdminSidebar } from "@/components/ds/AdminSidebar";
 import { BrandLogo } from "@/components/ui";
 import { ADMIN_NAV } from "@/lib/adminData";
 import { LogoutButton } from "./LogoutButton";
 
 export function AdminChrome({ pending, children }: { pending: number; children: React.ReactNode }) {
-  const pathname = usePathname();
-
-  if (pathname === "/admin/login") return <>{children}</>;
-
   const nav = ADMIN_NAV.map((n) => (n.id === "pedidos" ? { ...n, count: pending } : n));
   return (
     <div className="admin-shell">

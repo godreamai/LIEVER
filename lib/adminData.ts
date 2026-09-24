@@ -33,11 +33,11 @@ export const NEXT_STEP: Partial<Record<OrderStatus, NextStep>> = {
 };
 
 export const ADMIN_NAV = [
-  { id: "dash", label: "Dashboard", icon: "layout-dashboard", href: "/admin" },
-  { id: "pedidos", label: "Pedidos", icon: "clipboard-list", href: "/admin/pedidos" },
-  { id: "productos", label: "Productos", icon: "box", href: "/admin/productos" },
-  { id: "categorias", label: "Categorías", icon: "layers", href: "/admin/categorias" },
-  { id: "estadisticas", label: "Estadísticas", icon: "file-text", href: "/admin/estadisticas" },
-  { id: "envios", label: "Tarifas de envío", icon: "truck", href: "/admin/envios" },
-  { id: "perfil", label: "Mi perfil", icon: "user", href: "/admin/perfil" },
+  { id: "dash", label: "Dashboard", icon: "layout-dashboard", href: "/panel-de-administrador" },
+  { id: "pedidos", label: "Pedidos", icon: "clipboard-list", href: "/panel-de-administrador/pedidos" },
+  { id: "productos", label: "Productos", icon: "box", href: "/panel-de-administrador/productos" },
+  { id: "categorias", label: "Categorías", icon: "layers", href: "/panel-de-administrador/categorias" },
+  { id: "estadisticas", label: "Estadísticas", icon: "file-text", href: "/panel-de-administrador/estadisticas" },
+  { id: "envios", label: "Tarifas de envío", icon: "truck", href: "/panel-de-administrador/envios" },
+  { id: "perfil", label: "Mi perfil", icon: "user", href: "/panel-de-administrador/perfil" },
 ];

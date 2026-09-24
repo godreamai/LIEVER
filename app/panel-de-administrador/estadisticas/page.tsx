@@ -72,7 +72,7 @@ export default async function AdminStatsPage({ searchParams }: { searchParams: P
           {PERIODS.map((p) => (
             <Link
               key={p}
-              href={`/admin/estadisticas?dias=${p}`}
+              href={`/panel-de-administrador/estadisticas?dias=${p}`}
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: 11,

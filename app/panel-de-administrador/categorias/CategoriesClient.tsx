@@ -5,7 +5,7 @@ import { Button } from "@/components/ds/Button";
 import { Card } from "@/components/ds/Card";
 import { Icon } from "@/components/ds/Icon";
 import { MdfSurface } from "@/components/ds/MdfSurface";
-import { uploadProductImageAction } from "@/app/admin/productos/actions";
+import { uploadProductImageAction } from "@/app/panel-de-administrador/productos/actions";
 import { slugify } from "@/lib/slug";
 import { createCategoryAction, deleteCategoryAction, moveCategoryAction, updateCategoryAction, type ActionResult } from "./actions";
 
