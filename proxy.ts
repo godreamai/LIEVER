@@ -8,5 +8,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/panel-de-administrador/:path*", "/admin/login"],
+  matcher: ["/admin/:path*"],
 };

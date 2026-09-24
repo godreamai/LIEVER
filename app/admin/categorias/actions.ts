@@ -13,8 +13,8 @@ function refresh() {
   updateTag(CATALOG_TAG);
   revalidatePath("/");
   revalidatePath("/productos");
-  revalidatePath("/panel-de-administrador/categorias");
-  revalidatePath("/panel-de-administrador/productos");
+  revalidatePath("/admin/categorias");
+  revalidatePath("/admin/productos");
 }
 
 function failure(error: { code?: string }, fallback: string): ActionResult {

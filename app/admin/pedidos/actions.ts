@@ -12,7 +12,7 @@ export interface ActionResult {
 const STATUSES: OrderStatus[] = ["pendiente", "confirmado", "en_preparacion", "enviado", "entregado", "cancelado"];
 
 function refresh() {
-  revalidatePath("/panel-de-administrador", "layout");
+  revalidatePath("/admin", "layout");
 }
 
 export async function setOrderStatusAction(id: string, status: OrderStatus): Promise<ActionResult> {

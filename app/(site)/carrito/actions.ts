@@ -41,6 +41,6 @@ export async function placeOrderAction(input: PlaceOrderInput): Promise<PlaceOrd
   const row = Array.isArray(data) ? data[0] : data;
   if (!row) return { ok: false, error: "No pudimos registrar el pedido." };
 
-  revalidatePath("/panel-de-administrador", "layout");
+  revalidatePath("/admin", "layout");
   return { ok: true, number: Number(row.out_number), subtotal: Number(row.out_subtotal), shipping: Number(row.out_shipping), total: Number(row.out_total) };
 }

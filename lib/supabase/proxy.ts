@@ -40,6 +40,6 @@ export async function updateSession(request: NextRequest) {
   // Las policies de la base aplican la misma regla, esto solo evita mostrar un panel vacío.
   const { data: isAdmin } = await supabase.rpc("is_admin");
 
-  if (isAdmin) return isLoginPage ? redirectTo("/panel-de-administrador") : response;
+  if (isAdmin) return isLoginPage ? redirectTo("/admin") : response;
   return isLoginPage ? response : redirectTo(LOGIN_PATH, "?sinpermiso=1");
 }

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { Card } from "@/components/ds/Card";
 import { Icon } from "@/components/ds/Icon";
 import { OrdersTable } from "@/components/ds/OrdersTable";
-import { setOrderStatusAction } from "@/app/panel-de-administrador/pedidos/actions";
+import { setOrderStatusAction } from "@/app/admin/pedidos/actions";
 import { NEXT_STEP } from "@/lib/adminData";
 import { WA } from "@/lib/data";
 import type { Order } from "@/lib/types";

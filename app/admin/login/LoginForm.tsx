@@ -26,7 +26,7 @@ export function LoginForm({ noAccess = false }: { noAccess?: boolean }) {
       setError("Email o contraseña incorrectos.");
       return;
     }
-    router.push("/panel-de-administrador");
+    router.push("/admin");
     router.refresh();
   };
 

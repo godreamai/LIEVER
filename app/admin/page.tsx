@@ -53,7 +53,7 @@ export default async function AdminDashboard() {
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
             <h3 style={{ fontSize: 17, margin: 0 }}>Últimos pedidos</h3>
-            <Link href="/panel-de-administrador/pedidos" style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--accent)" }}>
+            <Link href="/admin/pedidos" style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--accent)" }}>
               ver todos →
             </Link>
           </div>

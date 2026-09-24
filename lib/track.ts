@@ -8,7 +8,7 @@ export type TrackType = "page_view" | "whatsapp_click" | "add_to_cart";
  */
 export function trackEvent(type: TrackType, path: string = window.location.pathname) {
   try {
-    if (/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname) || path.startsWith("/panel-de-administrador") || path.startsWith("/admin")) return;
+    if (/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname) || path.startsWith("/admin")) return;
     const body = JSON.stringify({ type, path });
     if (navigator.sendBeacon) navigator.sendBeacon("/api/track", new Blob([body], { type: "application/json" }));
     else fetch("/api/track", { method: "POST", body, keepalive: true, headers: { "Content-Type": "application/json" } }).catch(() => {});

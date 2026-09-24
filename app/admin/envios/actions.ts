@@ -42,6 +42,6 @@ export async function saveShippingZonesAction(zones: ZoneInput[]): Promise<{ ok:
   }
 
   updateTag(SHIPPING_TAG);
-  revalidatePath("/panel-de-administrador/envios");
+  revalidatePath("/admin/envios");
   return { ok: true };
 }
